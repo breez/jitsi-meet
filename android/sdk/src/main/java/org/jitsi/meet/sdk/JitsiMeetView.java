@@ -28,9 +28,11 @@ import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import android.view.View;
+import io.flutter.plugin.platform.PlatformView;
 
 public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
-        implements OngoingConferenceTracker.OngoingConferenceListener {
+        implements OngoingConferenceTracker.OngoingConferenceListener, PlatformView {
 
     /**
      * The {@code Method}s of {@code JitsiMeetViewListener} by event name i.e.
@@ -103,6 +105,13 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
         }
 
         OngoingConferenceTracker.getInstance().addListener(this);
+    }
+
+    @NonNull
+    @Override
+    public View getView() {
+        // TODO:
+        return null;
     }
 
     @Override

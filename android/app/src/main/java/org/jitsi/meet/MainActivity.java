@@ -40,6 +40,9 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
+import io.flutter.embedding.engine.FlutterEngine;
+
 /**
  * The one and only Activity that the Jitsi Meet app needs. The
  * {@code Activity} is launched in {@code singleTask} mode, so it will be
@@ -78,6 +81,11 @@ public class MainActivity extends JitsiMeetActivity {
 
     // JitsiMeetActivity overrides
     //
+
+    @Override
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        super.configureFlutterEngine(flutterEngine);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

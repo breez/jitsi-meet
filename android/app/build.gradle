@@ -92,6 +92,8 @@ dependencies {
     }
 
     implementation project(':sdk')
+
+    implementation files('YOUR_FLUTTER_PATH\\bin\\cache\\artifacts\\engine\\android-x64\\flutter.jar')
 }
 
 gradle.projectsEvaluated {

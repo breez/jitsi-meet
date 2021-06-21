@@ -24,11 +24,14 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import io.flutter.embedding.android.FlutterFragmentActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.facebook.react.modules.core.PermissionListener;
 
+import org.jitsi.meet.sdk.JitsiMeetViewFactory;
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
 import java.util.HashMap;
@@ -38,7 +41,7 @@ import android.app.Activity;
  * A base activity for SDK users to embed. It uses {@link JitsiMeetFragment} to do the heavy
  * lifting and wires the remaining Activity lifecycle methods so it works out of the box.
  */
-public class JitsiMeetActivity extends FragmentActivity
+public class JitsiMeetActivity extends FlutterFragmentActivity
     implements JitsiMeetActivityInterface {
 
     protected static final String TAG = JitsiMeetActivity.class.getSimpleName();
@@ -73,6 +76,13 @@ public class JitsiMeetActivity extends FragmentActivity
 
     // Overrides
     //
+    @Override
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        flutterEngine
+            .getPlatformViewsController()
+            .getRegistry()
+            .registerViewFactory("com.breez.client/jitsi", new JitsiMeetViewFactory());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,7 +257,7 @@ public class JitsiMeetActivity extends FragmentActivity
     }
 
     @Override
-    protected void onUserLeaveHint() {
+    public void onUserLeaveHint() {
         JitsiMeetView view = getJitsiView();
 
         if (view != null) {
