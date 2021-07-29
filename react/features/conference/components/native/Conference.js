@@ -26,6 +26,7 @@ import { BackButtonRegistry } from '../../../mobile/back-button';
 import { Captions } from '../../../subtitles';
 import { setToolboxVisible } from '../../../toolbox/actions';
 import { Toolbox } from '../../../toolbox/components/native';
+import PaymentAdjuster from '../../../mobile/breez-payment-strip/components/payment_adjuster.js'
 import { isToolboxVisible } from '../../../toolbox/functions';
 import {
     AbstractConference,
@@ -285,6 +286,7 @@ class Conference extends AbstractConference<Props, *> {
                     <LonelyMeetingExperience />
 
                     { _shouldDisplayTileView || <><Filmstrip /><Toolbox /></> }
+                    { _shouldDisplayTileView || <><Filmstrip /><PaymentAdjuster /></> }
                 </View>
 
                 <SafeAreaView
