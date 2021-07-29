@@ -28,7 +28,7 @@ function PaymentAdjuster(props) {
                     <View style={styles.imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
-                            tintColor={theme == 'light' ? light.fontColor : dark.fontColor}
+                            tintColor={theme == 'light' ? light.primaryColor : dark.primaryColor}
                             resizeMode="contain"
                             style={styles.image}
                         ></Image>
