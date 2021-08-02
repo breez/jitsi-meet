@@ -86,6 +86,10 @@ class ExternalAPIModule
         constants.put("CLOSE_CHAT", BroadcastAction.Type.CLOSE_CHAT.getAction());
         constants.put("SEND_CHAT_MESSAGE", BroadcastAction.Type.SEND_CHAT_MESSAGE.getAction());
         constants.put("SET_VIDEO_MUTED", BroadcastAction.Type.SET_VIDEO_MUTED.getAction());
+        constants.put("BOOST_PAYMENT", BroadcastAction.Type.BOOST_PAYMENT.getAction());
+        constants.put("SET_SATS_PER_MINUTE", BroadcastAction.Type.SET_SATS_PER_MINUTE.getAction());
+        constants.put("SET_CUSTOM_BOOST_AMOUNT", BroadcastAction.Type.SET_CUSTOM_BOOST_AMOUNT.getAction());
+        constants.put("SET_CUSTOM_SATS_PER_MINUTE", BroadcastAction.Type.SET_CUSTOM_SATS_PER_MINUTE.getAction());
 
         return constants;
     }

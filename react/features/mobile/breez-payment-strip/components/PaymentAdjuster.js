@@ -4,12 +4,15 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { onBoost, changeSatsPerMinute, setCustomBoostAmount, setCustomSatsPerMinAmount } from '../actions.js';
 import { AutoSizeText, ResizeTextMode } from 'react-native-auto-size-text';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 // TODO: Use values passed from conference config
 const presetBoostAmountsList = [100, 500, 1000, 5000, 10000, 50000];
 const presetSatsPerMinuteAmountsList = [0, 10, 25, 50, 100, 250, 500, 1000];
 const theme = 'light';
 
 function PaymentAdjuster(props) {
+    const dispatch = useDispatch();
     const [boostAmount, setBoostAmount] = React.useState(0);
     const [satsPerMinuteAmount, setSatsPerMinuteAmount] = React.useState(0);
 
@@ -24,7 +27,7 @@ function PaymentAdjuster(props) {
     return (
         <View style={[styles.container, props.style]}>
             <View style={styles.buttonRow}>
-                <TouchableOpacity onPress={() => onBoost(presetBoostAmountsList[boostAmount])} style={styles.button}>
+                <TouchableOpacity onPress={() => dispatch(onBoost(presetBoostAmountsList[boostAmount]))} style={styles.button}>
                     <View style={styles.imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
@@ -46,7 +49,7 @@ function PaymentAdjuster(props) {
                 >
                     <FeatherIcon name="minus-circle" style={styles.minusIcon}></FeatherIcon>
                 </TouchableOpacity>
-                <TouchableOpacity onLongPress={() => setCustomBoostAmount()}>
+                <TouchableOpacity onLongPress={() => dispatch(setCustomBoostAmount())}>
                     <View style={styles.boostAmountColumn}>
                         <AutoSizeText style={styles.boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
                             {formatAmount(presetBoostAmountsList[boostAmount])}
@@ -70,16 +73,16 @@ function PaymentAdjuster(props) {
                     onPress={() => {
                         if (satsPerMinuteAmount >= 1) {
                             setSatsPerMinuteAmount(satsPerMinuteAmount - 1);
-                            changeSatsPerMinute(presetSatsPerMinuteAmountsList[satsPerMinuteAmount - 1]);
+                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[satsPerMinuteAmount - 1]));
                         } else {
                             setSatsPerMinuteAmount(0);
-                            changeSatsPerMinute(presetSatsPerMinuteAmountsList[0]);
+                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[0]));
                         }
                     }}
                 >
                     <FeatherIcon name="minus-circle" style={styles.minusIcon1}></FeatherIcon>
                 </TouchableOpacity>
-                <TouchableOpacity onLongPress={() => setCustomSatsPerMinAmount()}>
+                <TouchableOpacity onLongPress={() => dispatch(setCustomSatsPerMinAmount())}>
                     <View style={styles.satsPerMinAmountColumn}>
                         <AutoSizeText
                             style={styles.satsPerMinAmount}
@@ -96,10 +99,10 @@ function PaymentAdjuster(props) {
                     onPress={() => {
                         if (satsPerMinuteAmount < presetSatsPerMinuteAmountsList.length - 1) {
                             setSatsPerMinuteAmount(satsPerMinuteAmount + 1);
-                            changeSatsPerMinute(presetSatsPerMinuteAmountsList[satsPerMinuteAmount + 1]);
+                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[satsPerMinuteAmount + 1]));
                         } else {
                             setSatsPerMinuteAmount(presetSatsPerMinuteAmountsList.length - 1);
-                            changeSatsPerMinute(presetSatsPerMinuteAmountsList[presetSatsPerMinuteAmountsList.length - 1]);
+                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[presetSatsPerMinuteAmountsList.length - 1]));
                         }
                     }}
                 >

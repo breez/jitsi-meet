@@ -86,7 +86,11 @@ public class BroadcastEvent {
         PARTICIPANTS_INFO_RETRIEVED("org.jitsi.meet.PARTICIPANTS_INFO_RETRIEVED"),
         CHAT_MESSAGE_RECEIVED("org.jitsi.meet.CHAT_MESSAGE_RECEIVED"),
         CHAT_TOGGLED("org.jitsi.meet.CHAT_TOGGLED"),
-        VIDEO_MUTED_CHANGED("org.jitsi.meet.VIDEO_MUTED_CHANGED");
+        VIDEO_MUTED_CHANGED("org.jitsi.meet.VIDEO_MUTED_CHANGED"),
+        BOOST_PAYMENT("org.jitsi.meet.BOOST_PAYMENT"),
+        SET_SATS_PER_MINUTE("org.jitsi.meet.SET_SATS_PER_MINUTE"),
+        SET_CUSTOM_BOOST_AMOUNT("org.jitsi.meet.SET_CUSTOM_BOOST_AMOUNT"),
+        SET_CUSTOM_SATS_PER_MINUTE("org.jitsi.meet.SET_CUSTOM_SATS_PER_MINUTE");
 
 
         private static final String CONFERENCE_WILL_JOIN_NAME = "CONFERENCE_WILL_JOIN";
@@ -101,6 +105,10 @@ public class BroadcastEvent {
         private static final String CHAT_MESSAGE_RECEIVED_NAME = "CHAT_MESSAGE_RECEIVED";
         private static final String CHAT_TOGGLED_NAME = "CHAT_TOGGLED";
         private static final String VIDEO_MUTED_CHANGED_NAME = "VIDEO_MUTED_CHANGED";
+        private static final String BOOST_PAYMENT_NAME = "BOOST_PAYMENT";
+        private static final String SET_SATS_PER_MINUTE_NAME = "SET_SATS_PER_MINUTE";
+        private static final String SET_CUSTOM_BOOST_AMOUNT_NAME = "SET_CUSTOM_BOOST_AMOUNT";
+        private static final String SET_CUSTOM_SATS_PER_MINUTE_NAME = "SET_CUSTOM_SATS_PER_MINUTE";
 
         private final String action;
 
@@ -147,6 +155,14 @@ public class BroadcastEvent {
                     return CHAT_TOGGLED;
                 case VIDEO_MUTED_CHANGED_NAME:
                     return VIDEO_MUTED_CHANGED;
+                case BOOST_PAYMENT_NAME:
+                    return BOOST_PAYMENT;
+                case SET_SATS_PER_MINUTE_NAME:
+                    return SET_SATS_PER_MINUTE;
+                case SET_CUSTOM_BOOST_AMOUNT_NAME:
+                    return SET_CUSTOM_BOOST_AMOUNT;
+                case SET_CUSTOM_SATS_PER_MINUTE_NAME:
+                    return SET_CUSTOM_SATS_PER_MINUTE;
             }
 
             return null;

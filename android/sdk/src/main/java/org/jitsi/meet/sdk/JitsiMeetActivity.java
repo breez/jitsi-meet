@@ -217,6 +217,38 @@ public class JitsiMeetActivity extends FragmentActivity
         }
     }
 
+    protected void onBoost(HashMap<String, Object> extraData) {
+        try {
+            JitsiMeetLogger.i("Boosted: " + extraData.get("boostAmount"), extraData);
+        } catch (Exception e) {
+            JitsiMeetLogger.w("Invalid boost extraData", e);
+        }
+    }
+
+    protected void changeSatsPerMinute(HashMap<String, Object> extraData) {
+        try {
+            JitsiMeetLogger.i("Changed Sats Per Minute: " + extraData.get("satsPerMinute"), extraData);
+        } catch (Exception e) {
+            JitsiMeetLogger.w("Invalid changed sats per minute extraData", e);
+        }
+    }
+
+    protected void setCustomBoostAmount() {
+        try {
+            JitsiMeetLogger.i("Set Custom Boost Amount Request");
+        } catch (Exception e) {
+            JitsiMeetLogger.w("Invalid set custom boost amount request", e);
+        }
+    }
+
+    protected void setCustomSatsPerMinAmount() {
+        try {
+            JitsiMeetLogger.i("Set Custom Sats Per Minute Amount Request");
+        } catch (Exception e) {
+            JitsiMeetLogger.w("Invalid set custom sats per minute amount request", e);
+        }
+    }
+
     // Activity lifecycle methods
     //
 
@@ -297,6 +329,18 @@ public class JitsiMeetActivity extends FragmentActivity
                     break;
                 case PARTICIPANT_LEFT:
                     onParticipantLeft(event.getData());
+                    break;
+                case BOOST_PAYMENT:
+                    onBoost(event.getData());
+                    break;
+                case SET_SATS_PER_MINUTE:
+                    changeSatsPerMinute(event.getData());
+                    break;
+                case SET_CUSTOM_BOOST_AMOUNT:
+                    setCustomBoostAmount();
+                    break;
+                case SET_CUSTOM_SATS_PER_MINUTE:
+                    setCustomSatsPerMinAmount();
                     break;
             }
         }

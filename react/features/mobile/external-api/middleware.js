@@ -36,6 +36,7 @@ import { openChat } from '../../chat/actions';
 import { sendMessage, setPrivateMessageRecipient, closeChat } from '../../chat/actions.any';
 import { muteLocal } from '../../video-menu/actions';
 import { ENTER_PICTURE_IN_PICTURE } from '../picture-in-picture';
+import { BOOST_PAYMENT, SET_SATS_PER_MINUTE, SET_CUSTOM_BOOST_AMOUNT, SET_CUSTOM_SATS_PER_MINUTE } from '../breez-payment-strip';
 
 import { setParticipantsWithScreenShare } from './actions';
 import { sendEvent } from './functions';
@@ -220,6 +221,22 @@ MiddlewareRegistry.register(store => next => action => {
             /* data */ {
                 muted: action.muted
             });
+        break;
+
+    case BOOST_PAYMENT:
+        sendEvent(store, type,/* data */ { boostAmount: action.boostAmount });
+        break;
+
+    case SET_SATS_PER_MINUTE:
+        sendEvent(store, type,/* data */ { satsPerMinute: action.satsPerMinute });
+        break;
+
+    case SET_CUSTOM_BOOST_AMOUNT:
+        sendEvent(store, type, /* data */ {});
+        break;
+
+    case SET_CUSTOM_SATS_PER_MINUTE:
+        sendEvent(store, type, /* data */ {});
         break;
     }
 

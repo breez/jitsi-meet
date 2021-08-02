@@ -48,4 +48,30 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onConferenceWillJoin(Map<String, Object> data);
+
+    /**
+     * Called when user boosts payment to conference host
+     *
+     * @param  data Map with a "boostAmount" key with the boost amount.
+     */
+    void onBoost(Map<String, Object> data);
+
+    /**
+     * Called when user changes Sats/Min amount being streamed to conference host
+     *
+     * @param data Map with a "satsPerMinute" key with the sats per minute amount.
+     */
+    void changeSatsPerMinute(Map<String, Object> data);
+
+    /**
+     * Called when user wants to input a custom boost amount
+     */
+    void setCustomBoostAmount();
+
+    /**
+     * Called when user wants to input a custom Sats/Min amount
+     *
+     * @param data Map with a "satsPerMinute" key with the sats per minute amount.
+     */
+    void setCustomSatsPerMinAmount();
 }

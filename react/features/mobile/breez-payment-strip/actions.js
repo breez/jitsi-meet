@@ -3,9 +3,9 @@
 import { BOOST_PAYMENT, SET_SATS_PER_MINUTE, SET_CUSTOM_BOOST_AMOUNT, SET_CUSTOM_SATS_PER_MINUTE } from './actionTypes';
 
 /**
- * ? Add explanation ?
+ * Sends host of the conference the boost amount
  *
- * @param {int} boostAmount - ? Add explanation ?
+ * @param {int} boostAmount - Amount to be sent to host in Sats
  * @public
  * @returns {{
  *     type: BOOST_PAYMENT,
@@ -13,13 +13,16 @@ import { BOOST_PAYMENT, SET_SATS_PER_MINUTE, SET_CUSTOM_BOOST_AMOUNT, SET_CUSTOM
  * }}
  */
 export function onBoost(boostAmount: number) {
-    // TODO:
+    return {
+        type: BOOST_PAYMENT,
+        boostAmount
+    };
 }
 
 /**
- * ? Add explanation ?
+ * Change Sats/Minute that is being streamed to the host of the conference
  *
- * @param {int} satsPerMinute - ? Add explanation ?
+ * @param {int} satsPerMinute - Amount being streamed to host in Sats
  * @protected
  * @returns {{
  *     type: SET_SATS_PER_MINUTE,
@@ -27,11 +30,14 @@ export function onBoost(boostAmount: number) {
  * }}
  */
 export function changeSatsPerMinute(satsPerMinute: number) {
-    // TODO:
+    return {
+        type: SET_SATS_PER_MINUTE,
+        satsPerMinute
+    };
 }
 
 /**
- * ? Add explanation ?
+ * Opens up a dialog to set a custom boost amount
  *
  * @protected
  * @returns {{
@@ -39,11 +45,11 @@ export function changeSatsPerMinute(satsPerMinute: number) {
  * }}
  */
 export function setCustomBoostAmount() {
-    // TODO:
+    return { type: SET_CUSTOM_BOOST_AMOUNT };
 }
 
 /**
- * ? Add explanation ?
+ * Opens up a dialog to set a custom Sats/Minute amount
  *
  * @protected
  * @returns {{
@@ -51,5 +57,5 @@ export function setCustomBoostAmount() {
  * }}
  */
 export function setCustomSatsPerMinAmount() {
-    // TODO:
+    return { type: SET_CUSTOM_SATS_PER_MINUTE };
 }

@@ -76,7 +76,11 @@ public class BroadcastAction {
         OPEN_CHAT("org.jitsi.meet.OPEN_CHAT"),
         CLOSE_CHAT("org.jitsi.meet.CLOSE_CHAT"),
         SEND_CHAT_MESSAGE("org.jitsi.meet.SEND_CHAT_MESSAGE"),
-        SET_VIDEO_MUTED("org.jitsi.meet.SET_VIDEO_MUTED");
+        SET_VIDEO_MUTED("org.jitsi.meet.SET_VIDEO_MUTED"),
+        BOOST_PAYMENT("org.jitsi.meet.BOOST_PAYMENT"),
+        SET_SATS_PER_MINUTE("org.jitsi.meet.SET_SATS_PER_MINUTE"),
+        SET_CUSTOM_BOOST_AMOUNT("org.jitsi.meet.SET_CUSTOM_BOOST_AMOUNT"),
+        SET_CUSTOM_SATS_PER_MINUTE("org.jitsi.meet.SET_CUSTOM_SATS_PER_MINUTE");
 
         private final String action;
 
