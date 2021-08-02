@@ -26,7 +26,7 @@ import { BackButtonRegistry } from '../../../mobile/back-button';
 import { Captions } from '../../../subtitles';
 import { setToolboxVisible } from '../../../toolbox/actions';
 import { Toolbox } from '../../../toolbox/components/native';
-import PaymentAdjuster from '../../../mobile/breez-payment-strip/components/payment_adjuster.js'
+import { PaymentAdjuster } from '../../../mobile/breez-payment-strip';
 import { isToolboxVisible } from '../../../toolbox/functions';
 import {
     AbstractConference,
