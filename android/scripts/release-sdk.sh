@@ -16,7 +16,7 @@ DO_GIT_TAG=${GIT_TAG:-0}
 if [[ $THE_MVN_REPO == http* ]]; then
     MVN_HTTP=1
 else
-    MVN_REPO_PATH=$(realpath $THE_MVN_REPO)
+    MVN_REPO_PATH=$THE_MVN_REPO
     THE_MVN_REPO="file:${MVN_REPO_PATH}"
 fi
 
