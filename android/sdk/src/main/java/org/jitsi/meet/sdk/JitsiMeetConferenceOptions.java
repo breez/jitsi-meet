@@ -67,6 +67,8 @@ public class JitsiMeetConferenceOptions implements Parcelable {
     private Boolean audioOnly;
     private Boolean videoMuted;
 
+    private Boolean isLightTheme;
+
     /**
      * USer information, to be used when no token is specified.
      */
@@ -112,6 +114,10 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         return userInfo;
     }
 
+    public Boolean getIsLightTheme() {
+        return isLightTheme;
+    }
+
     /**
      * Class used to build the immutable {@link JitsiMeetConferenceOptions} object.
      */
@@ -129,6 +135,8 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         private Boolean videoMuted;
 
         private JitsiMeetUserInfo userInfo;
+
+        private Boolean isLightTheme;
 
         public Builder() {
             featureFlags = new Bundle();
@@ -261,6 +269,12 @@ public class JitsiMeetConferenceOptions implements Parcelable {
             return this;
         }
 
+        public Builder setLightTheme(boolean isLightTheme) {
+            this.isLightTheme = isLightTheme;
+
+            return this;
+        }
+
         /**
          * Builds the immutable {@link JitsiMeetConferenceOptions} object with the configuration
          * that this {@link Builder} instance specified.
@@ -279,6 +293,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
             options.audioOnly = this.audioOnly;
             options.videoMuted = this.videoMuted;
             options.userInfo = this.userInfo;
+            options.isLightTheme = this.isLightTheme;
 
             return options;
         }
@@ -301,6 +316,8 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         audioOnly = tmpAudioOnly == 0 ? null : tmpAudioOnly == 1;
         byte tmpVideoMuted = in.readByte();
         videoMuted = tmpVideoMuted == 0 ? null : tmpVideoMuted == 1;
+        byte tmpIsLightTheme = in.readByte();
+        isLightTheme = tmpIsLightTheme == 0 ? null : tmpIsLightTheme == 1;
     }
 
     Bundle asProps() {
@@ -354,6 +371,10 @@ public class JitsiMeetConferenceOptions implements Parcelable {
             props.putBundle("userInfo", userInfo.asBundle());
         }
 
+        if (isLightTheme != null) {
+            props.putBoolean("isLightTheme", isLightTheme);
+        }
+
         urlProps.putBundle("config", config);
         props.putBundle("url", urlProps);
 
@@ -387,6 +408,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         dest.writeByte((byte) (audioMuted == null ? 0 : audioMuted ? 1 : 2));
         dest.writeByte((byte) (audioOnly == null ? 0 : audioOnly ? 1 : 2));
         dest.writeByte((byte) (videoMuted == null ? 0 : videoMuted ? 1 : 2));
+        dest.writeByte((byte) (isLightTheme == null ? 0 : isLightTheme ? 1 : 2));
     }
 
     @Override

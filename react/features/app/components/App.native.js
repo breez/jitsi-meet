@@ -46,7 +46,9 @@ type Props = AbstractAppProps & {
     /**
      * An object with user information (display name, email, avatar URL).
      */
-    userInfo: ?Object
+    userInfo: ?Object,
+
+    isLightTheme: ?boolean
 };
 
 /**
@@ -110,6 +112,10 @@ export class App extends AbstractApp {
             }
 
             dispatch(updateSettings(this.props.userInfo || {}));
+            console.error(this.props.isLightTheme);
+            dispatch(updateSettings({
+             isLightTheme: this.props.isLightTheme
+             }));
 
             // Update settings with feature-flag.
             const callIntegrationEnabled = this.props.flags[CALL_INTEGRATION_ENABLED];

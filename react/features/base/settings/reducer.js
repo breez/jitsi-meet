@@ -35,7 +35,8 @@ const DEFAULT_STATE = {
     userSelectedAudioOutputDeviceLabel: undefined,
     userSelectedCameraDeviceLabel: undefined,
     userSelectedMicDeviceLabel: undefined,
-    userSelectedSkipPrejoin: undefined
+    userSelectedSkipPrejoin: undefined,
+    isLightTheme: true
 };
 
 const STORE_NAME = 'features/base/settings';
@@ -92,6 +93,8 @@ function _initSettings(featureState) {
     const savedDisplayName = jitsiLocalStorage.getItem('displayname');
     const savedEmail = jitsiLocalStorage.getItem('email');
 
+    const isLightTheme = jitsiLocalStorage.getItem('isLightTheme');
+
     // The helper _.escape will convert null to an empty strings. The empty
     // string will be saved in settings. On app re-load, because an empty string
     // is a defined value, it will override any value found in local storage.
@@ -102,7 +105,8 @@ function _initSettings(featureState) {
 
     settings = assignIfDefined({
         displayName,
-        email
+        email,
+        isLightTheme,
     }, settings);
 
     return settings;
