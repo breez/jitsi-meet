@@ -25,13 +25,14 @@ const dark = {
 
 type Props = {
     _isLightTheme?: boolean,
-    _moderatorData: Array<string>,
+    _paymentInfo: string,
     dispatch: Dispatch<any>,
 };
 
 function PaymentAdjuster(props: Props) {
     const {
         _isLightTheme,
+        _paymentInfo,
         dispatch = useDispatch()
     } = props;
 
@@ -274,9 +275,13 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
 
 function _mapStateToProps(state, ownProps) {
     const { isLightTheme } = state['features/base/settings'];
-
+    const participants = state['features/base/participants'];
+    const presenter = participants
+        .find(participant => participant?.email.startsWith('breez:'));
+    let paymentInfo = presenter?.email.substring(6);
     return {
         _isLightTheme: Boolean(isLightTheme),
+        _paymentInfo: paymentInfo,
     };
 }
 
