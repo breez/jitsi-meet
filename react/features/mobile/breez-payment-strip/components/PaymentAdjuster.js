@@ -33,6 +33,7 @@ type Props = {
 };
 
 // FIXME: Open input dialog and return value as custom boost & sats/min value instead of the placeholder value
+// TODO: Add and remove custom values from preset list
 function PaymentAdjuster(props: Props) {
     const {
         _isLightTheme,
@@ -45,29 +46,6 @@ function PaymentAdjuster(props: Props) {
         _customSatsPerMinAmountValue,
         dispatch = useDispatch()
     } = props;
-
-    function insert(element, array) {
-		if (element != 0) {
-			array.splice(locationOf(element, array) + 1, 0, element);
-		}
-		return array;
-	}
-
-	function locationOf(element, array, start, end) {
-		start = start || 0;
-		end = end || array.length;
-		var pivot = parseInt(start + (end - start) / 2, 10);
-		if (end - start <= 1 || array[pivot] === element) return pivot;
-		if (array[pivot] < element) {
-			return locationOf(element, array, pivot, end);
-		}
-		else {
-			return locationOf(element, array, start, pivot);
-		}
-	}
-
-	insert(_customBoostValue, _presetBoostAmountsList);
-	insert(_customSatsPerMinAmountValue, _presetSatsPerMinuteAmountsList);
 
     const [boostAmount, setBoostAmount] = React.useState(_selectedBoostAmountIndex);
     const [satsPerMinuteAmount, setSatsPerMinuteAmount] = React.useState(_selectedSatsPerMinuteAmountIndex);
@@ -313,19 +291,36 @@ function _mapStateToProps(state, ownProps) {
         .find(participant => participant?.email.startsWith('breez:'));
     let paymentInfo = presenter?.email.substring(6);
     let _paymentOptions = JSON.parse(paymentOptions);
-    // TODO: Get preset payment options list info from settings
-    const presetBoostAmountsList = [1000, 5000, 10000, 25000, 50000, 100000];
-    const presetSatsPerMinuteAmountsList = [0, 50, 100, 250, 500, 1000, 2500, 5000];
     return {
         _isLightTheme: Boolean(isLightTheme),
         _paymentInfo: paymentInfo,
-        _presetBoostAmountsList: presetBoostAmountsList,
-        _presetSatsPerMinuteAmountsList: presetSatsPerMinuteAmountsList,
-        _selectedBoostAmountIndex: Number(_paymentOptions.selectedBoostAmountIndex),
-        _selectedSatsPerMinuteAmountIndex: Number(_paymentOptions.selectedSatsPerMinuteAmountIndex),
-        _customBoostValue: Number(_paymentOptions.customBoostValue),
-        _customSatsPerMinAmountValue: Number(_paymentOptions.customSatsPerMinAmountValue),
+        _presetBoostAmountsList: insert(_paymentOptions.customBoostValue, _paymentOptions.presetBoostAmountsList),
+        _presetSatsPerMinuteAmountsList: insert(_paymentOptions.customSatsPerMinAmountValue, _paymentOptions.presetSatsPerMinuteAmountsList),
+        _selectedBoostAmountIndex: _paymentOptions.selectedBoostAmountIndex,
+        _selectedSatsPerMinuteAmountIndex: _paymentOptions.selectedSatsPerMinuteAmountIndex,
+        _customBoostValue: _paymentOptions.customBoostValue,
+        _customSatsPerMinAmountValue: _paymentOptions.customSatsPerMinAmountValue,
     };
+}
+
+function insert(element, array) {
+    if(element > array[0]) {
+	    array.splice(locationOf(element, array) + 1, 0, element);
+	}
+	return array;
+}
+
+function locationOf(element, array, start, end) {
+	start = start || 0;
+	end = end || array.length;
+	var pivot = parseInt(start + (end - start) / 2, 10);
+	if (end - start <= 1 || array[pivot] === element) return pivot;
+	if (array[pivot] < element) {
+		return locationOf(element, array, pivot, end);
+	}
+	else {
+		return locationOf(element, array, start, pivot);
+	}
 }
 
 export default connect(_mapStateToProps, _mapDispatchToProps)(PaymentAdjuster);
