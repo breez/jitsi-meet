@@ -44,10 +44,14 @@ export function changeSatsPerMinute(satsPerMinute: number) {
  * @protected
  * @returns {{
  *     type: SET_CUSTOM_BOOST_AMOUNT,
+ *     customBoostValue: number,
  * }}
  */
-export function setCustomBoostAmount() {
-    return { type: SET_CUSTOM_BOOST_AMOUNT };
+export function setCustomBoostAmount(customBoostValue: number) {
+    return {
+        type: SET_CUSTOM_BOOST_AMOUNT,
+        customBoostValue
+    };
 }
 
 /**
@@ -56,8 +60,12 @@ export function setCustomBoostAmount() {
  * @protected
  * @returns {{
  *     type: SET_CUSTOM_SATS_PER_MINUTE,
+ *     customSatsPerMinValue: number,
  * }}
  */
-export function setCustomSatsPerMinAmount() {
-    return { type: SET_CUSTOM_SATS_PER_MINUTE };
+export function setCustomSatsPerMinAmount(customSatsPerMinValue: number) {
+    return {
+        type: SET_CUSTOM_SATS_PER_MINUTE,
+        customSatsPerMinValue
+    };
 }

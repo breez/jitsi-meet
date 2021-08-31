@@ -81,7 +81,8 @@ function PaymentAdjuster(props: Props) {
                 >
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon}></FeatherIcon>
                 </TouchableOpacity>
-                <TouchableOpacity onLongPress={() => dispatch(setCustomBoostAmount())}>
+                // FIXME: Open input dialog and return value as custom boost value instead of placeholder value
+                <TouchableOpacity onLongPress={() => dispatch(setCustomBoostAmount(666))}>
                     <View style={styles(_isLightTheme).boostAmountColumn}>
                         <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
                             {formatAmount(_presetBoostAmountsList[boostAmount])}
@@ -114,7 +115,8 @@ function PaymentAdjuster(props: Props) {
                 >
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon1}></FeatherIcon>
                 </TouchableOpacity>
-                <TouchableOpacity onLongPress={() => dispatch(setCustomSatsPerMinAmount())}>
+                // FIXME: Open input dialog and return value as custom sats/min value instead of placeholder value
+                <TouchableOpacity onLongPress={() => dispatch(setCustomSatsPerMinAmount(222))}>
                     <View style={styles(_isLightTheme).satsPerMinAmountColumn}>
                         <AutoSizeText
                             style={styles(_isLightTheme).satsPerMinAmount}

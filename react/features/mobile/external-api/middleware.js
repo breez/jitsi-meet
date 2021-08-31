@@ -242,11 +242,21 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case SET_CUSTOM_BOOST_AMOUNT:
-        sendEvent(store, type, /* data */ {});
+        sendEvent(
+            store,
+            type,
+            /* data */ {
+                customBoostValue: action.customBoostValue
+            });
         break;
 
     case SET_CUSTOM_SATS_PER_MINUTE:
-        sendEvent(store, type, /* data */ {});
+        sendEvent(
+            store,
+            type,
+            /* data */ {
+                customSatsPerMinValue: action.customSatsPerMinValue
+            });
         break;
     }
 

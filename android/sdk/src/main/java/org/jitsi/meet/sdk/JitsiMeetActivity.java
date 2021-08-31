@@ -233,17 +233,17 @@ public class JitsiMeetActivity extends FragmentActivity
         }
     }
 
-    protected void setCustomBoostAmount() {
+    protected void setCustomBoostAmount(HashMap<String, Object> extraData) {
         try {
-            JitsiMeetLogger.i("Set Custom Boost Amount Request");
+            JitsiMeetLogger.i("Set Custom Boost Amount to " + extraData.get("customBoostValue"), extraData);
         } catch (Exception e) {
             JitsiMeetLogger.w("Invalid set custom boost amount request", e);
         }
     }
 
-    protected void setCustomSatsPerMinAmount() {
+    protected void setCustomSatsPerMinAmount(HashMap<String, Object> extraData) {
         try {
-            JitsiMeetLogger.i("Set Custom Sats Per Minute Amount Request");
+            JitsiMeetLogger.i("Set Custom Sats Per Minute Amount to " + extraData.get("customSatsPerMinAmountValue"), extraData);
         } catch (Exception e) {
             JitsiMeetLogger.w("Invalid set custom sats per minute amount request", e);
         }
@@ -337,10 +337,10 @@ public class JitsiMeetActivity extends FragmentActivity
                     changeSatsPerMinute(event.getData());
                     break;
                 case SET_CUSTOM_BOOST_AMOUNT:
-                    setCustomBoostAmount();
+                    setCustomBoostAmount(event.getData());
                     break;
                 case SET_CUSTOM_SATS_PER_MINUTE:
-                    setCustomSatsPerMinAmount();
+                    setCustomSatsPerMinAmount(event.getData());
                     break;
             }
         }

@@ -66,12 +66,12 @@ public interface JitsiMeetViewListener {
     /**
      * Called when user wants to input a custom boost amount
      */
-    void setCustomBoostAmount();
+    void setCustomBoostAmount(Map<String, Object> data);
 
     /**
      * Called when user wants to input a custom Sats/Min amount
      *
      * @param data Map with a "satsPerMinute" key with the sats per minute amount.
      */
-    void setCustomSatsPerMinAmount();
+    void setCustomSatsPerMinAmount(Map<String, Object> data);
 }
