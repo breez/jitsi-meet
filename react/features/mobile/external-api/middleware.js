@@ -224,11 +224,21 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case BOOST_PAYMENT:
-        sendEvent(store, type,/* data */ { boostAmount: action.boostAmount });
+        sendEvent(
+            store,
+            type,
+            /* data */ {
+                boostAmount: action.boostAmount,
+                paymentInfo: action.paymentInfo
+            });
         break;
 
     case SET_SATS_PER_MINUTE:
-        sendEvent(store, type,/* data */ { satsPerMinute: action.satsPerMinute });
+        sendEvent(
+            store,
+            type,/* data */ {
+                satsPerMinute: action.satsPerMinute
+            });
         break;
 
     case SET_CUSTOM_BOOST_AMOUNT:
