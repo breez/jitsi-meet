@@ -68,10 +68,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
     private Boolean videoMuted;
 
     private Boolean isLightTheme;
-    private int customBoostValue;
-    private int customSatsPerMinAmountValue;
-    private int selectedBoostAmountIndex;
-    private int selectedSatsPerMinuteAmountIndex;
+    private String paymentOptions;
 
     /**
      * USer information, to be used when no token is specified.
@@ -122,21 +119,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         return isLightTheme;
     }
 
-    public int getCustomBoostValue() {
-        return customBoostValue;
-    }
-
-    public int getCustomSatsPerMinAmountValue() {
-        return customSatsPerMinAmountValue;
-    }
-
-    public int getSelectedBoostAmountIndex() {
-        return selectedBoostAmountIndex;
-    }
-
-    public int getSelectedSatsPerMinuteAmountIndex() {
-        return selectedSatsPerMinuteAmountIndex;
-    }
+    public String getPaymentOptions() { return paymentOptions; }
 
     /**
      * Class used to build the immutable {@link JitsiMeetConferenceOptions} object.
@@ -157,10 +140,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         private JitsiMeetUserInfo userInfo;
 
         private Boolean isLightTheme;
-        private int customBoostValue;
-        private int customSatsPerMinAmountValue;
-        private int selectedBoostAmountIndex;
-        private int selectedSatsPerMinuteAmountIndex;
+        private String paymentOptions;
 
         public Builder() {
             featureFlags = new Bundle();
@@ -299,26 +279,8 @@ public class JitsiMeetConferenceOptions implements Parcelable {
             return this;
         }
 
-        public Builder setCustomBoostValue(int customBoostValue) {
-            this.customBoostValue = customBoostValue;
-
-            return this;
-        }
-
-        public Builder setCustomSatsPerMinAmountValue(int customSatsPerMinAmountValue) {
-            this.customSatsPerMinAmountValue = customSatsPerMinAmountValue;
-
-            return this;
-        }
-
-        public Builder setSelectedBoostAmountIndex(int selectedBoostAmountIndex) {
-            this.selectedBoostAmountIndex = selectedBoostAmountIndex;
-
-            return this;
-        }
-
-        public Builder setSelectedSatsPerMinuteAmountIndex(int selectedSatsPerMinuteAmountIndex) {
-            this.selectedSatsPerMinuteAmountIndex = selectedSatsPerMinuteAmountIndex;
+        public Builder setPaymentOptions(String paymentOptions) {
+            this.paymentOptions = paymentOptions;
 
             return this;
         }
@@ -342,10 +304,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
             options.videoMuted = this.videoMuted;
             options.userInfo = this.userInfo;
             options.isLightTheme = this.isLightTheme;
-            options.customBoostValue = this.customBoostValue;
-            options.customSatsPerMinAmountValue = this.customSatsPerMinAmountValue;
-            options.selectedBoostAmountIndex = this.selectedBoostAmountIndex;
-            options.selectedSatsPerMinuteAmountIndex = this.selectedSatsPerMinuteAmountIndex;
+            options.paymentOptions = this.paymentOptions;
             return options;
         }
     }
@@ -369,10 +328,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         videoMuted = tmpVideoMuted == 0 ? null : tmpVideoMuted == 1;
         byte tmpIsLightTheme = in.readByte();
         isLightTheme = tmpIsLightTheme == 0 ? null : tmpIsLightTheme == 1;
-        customBoostValue = in.readInt();
-        customSatsPerMinAmountValue = in.readInt();
-        selectedBoostAmountIndex = in.readInt();
-        selectedSatsPerMinuteAmountIndex = in.readInt();
+        paymentOptions = in.readString();
     }
 
     Bundle asProps() {
@@ -430,10 +386,9 @@ public class JitsiMeetConferenceOptions implements Parcelable {
             props.putBoolean("isLightTheme", isLightTheme);
         }
 
-        props.putInt("customBoostValue", customBoostValue);
-        props.putInt("customSatsPerMinAmountValue", customSatsPerMinAmountValue);
-        props.putInt("selectedBoostAmountIndex", selectedBoostAmountIndex);
-        props.putInt("selectedSatsPerMinuteAmountIndex", selectedSatsPerMinuteAmountIndex);
+        if (paymentOptions != null) {
+            props.putString("paymentOptions", paymentOptions);
+        }
 
         urlProps.putBundle("config", config);
         props.putBundle("url", urlProps);
@@ -469,10 +424,7 @@ public class JitsiMeetConferenceOptions implements Parcelable {
         dest.writeByte((byte) (audioOnly == null ? 0 : audioOnly ? 1 : 2));
         dest.writeByte((byte) (videoMuted == null ? 0 : videoMuted ? 1 : 2));
         dest.writeByte((byte) (isLightTheme == null ? 0 : isLightTheme ? 1 : 2));
-        dest.writeInt(customBoostValue);
-        dest.writeInt(customSatsPerMinAmountValue);
-        dest.writeInt(selectedBoostAmountIndex);
-        dest.writeInt(selectedSatsPerMinuteAmountIndex);
+        dest.writeString(paymentOptions);
     }
 
     @Override

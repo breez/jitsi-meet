@@ -32,18 +32,42 @@ type Props = {
     dispatch: Dispatch<any>,
 };
 
+// FIXME: Open input dialog and return value as custom boost & sats/min value instead of the placeholder value
 function PaymentAdjuster(props: Props) {
     const {
         _isLightTheme,
         _paymentInfo,
         _presetBoostAmountsList,
+        _presetSatsPerMinuteAmountsList,
         _selectedBoostAmountIndex,
         _selectedSatsPerMinuteAmountIndex,
-        _presetSatsPerMinuteAmountsList,
         _customBoostValue,
         _customSatsPerMinAmountValue,
         dispatch = useDispatch()
     } = props;
+
+    function insert(element, array) {
+		if (element != 0) {
+			array.splice(locationOf(element, array) + 1, 0, element);
+		}
+		return array;
+	}
+
+	function locationOf(element, array, start, end) {
+		start = start || 0;
+		end = end || array.length;
+		var pivot = parseInt(start + (end - start) / 2, 10);
+		if (end - start <= 1 || array[pivot] === element) return pivot;
+		if (array[pivot] < element) {
+			return locationOf(element, array, pivot, end);
+		}
+		else {
+			return locationOf(element, array, start, pivot);
+		}
+	}
+
+	insert(_customBoostValue, _presetBoostAmountsList);
+	insert(_customSatsPerMinAmountValue, _presetSatsPerMinuteAmountsList);
 
     const [boostAmount, setBoostAmount] = React.useState(_selectedBoostAmountIndex);
     const [satsPerMinuteAmount, setSatsPerMinuteAmount] = React.useState(_selectedSatsPerMinuteAmountIndex);
@@ -81,7 +105,6 @@ function PaymentAdjuster(props: Props) {
                 >
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon}></FeatherIcon>
                 </TouchableOpacity>
-                // FIXME: Open input dialog and return value as custom boost value instead of placeholder value
                 <TouchableOpacity onLongPress={() => dispatch(setCustomBoostAmount(666))}>
                     <View style={styles(_isLightTheme).boostAmountColumn}>
                         <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
@@ -115,7 +138,6 @@ function PaymentAdjuster(props: Props) {
                 >
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon1}></FeatherIcon>
                 </TouchableOpacity>
-                // FIXME: Open input dialog and return value as custom sats/min value instead of placeholder value
                 <TouchableOpacity onLongPress={() => dispatch(setCustomSatsPerMinAmount(222))}>
                     <View style={styles(_isLightTheme).satsPerMinAmountColumn}>
                         <AutoSizeText
@@ -285,11 +307,12 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
 
 
 function _mapStateToProps(state, ownProps) {
-    const { isLightTheme, customBoostValue, customSatsPerMinAmountValue, selectedBoostAmountIndex, selectedSatsPerMinuteAmountIndex } = state['features/base/settings'];
+    const { isLightTheme, paymentOptions } = state['features/base/settings'];
     const participants = state['features/base/participants'];
     const presenter = participants
         .find(participant => participant?.email.startsWith('breez:'));
     let paymentInfo = presenter?.email.substring(6);
+    let _paymentOptions = JSON.parse(paymentOptions);
     // TODO: Get preset payment options list info from settings
     const presetBoostAmountsList = [1000, 5000, 10000, 25000, 50000, 100000];
     const presetSatsPerMinuteAmountsList = [0, 50, 100, 250, 500, 1000, 2500, 5000];
@@ -298,10 +321,10 @@ function _mapStateToProps(state, ownProps) {
         _paymentInfo: paymentInfo,
         _presetBoostAmountsList: presetBoostAmountsList,
         _presetSatsPerMinuteAmountsList: presetSatsPerMinuteAmountsList,
-        _selectedBoostAmountIndex: selectedBoostAmountIndex,
-        _selectedSatsPerMinuteAmountIndex: selectedSatsPerMinuteAmountIndex,
-        _customBoostValue: customBoostValue,
-        _customSatsPerMinAmountValue: customSatsPerMinAmountValue,
+        _selectedBoostAmountIndex: Number(_paymentOptions.selectedBoostAmountIndex),
+        _selectedSatsPerMinuteAmountIndex: Number(_paymentOptions.selectedSatsPerMinuteAmountIndex),
+        _customBoostValue: Number(_paymentOptions.customBoostValue),
+        _customSatsPerMinAmountValue: Number(_paymentOptions.customSatsPerMinAmountValue),
     };
 }
 
