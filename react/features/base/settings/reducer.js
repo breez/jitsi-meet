@@ -36,7 +36,11 @@ const DEFAULT_STATE = {
     userSelectedCameraDeviceLabel: undefined,
     userSelectedMicDeviceLabel: undefined,
     userSelectedSkipPrejoin: undefined,
-    isLightTheme: true
+    isLightTheme: true,
+    customBoostValue: undefined,
+    customSatsPerMinAmountValue: undefined,
+    selectedBoostAmountIndex: 0,
+    selectedSatsPerMinuteAmountIndex: 0,
 };
 
 const STORE_NAME = 'features/base/settings';

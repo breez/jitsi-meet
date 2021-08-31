@@ -7,9 +7,6 @@ import { AutoSizeText, ResizeTextMode } from 'react-native-auto-size-text';
 import { useDispatch, useSelector } from 'react-redux';
 import { connect } from '../../../base/redux';
 
-// TODO: Use values passed from conference config
-const presetBoostAmountsList = [100, 500, 1000, 5000, 10000, 50000];
-const presetSatsPerMinuteAmountsList = [0, 10, 25, 50, 100, 250, 500, 1000];
 const light = {
     backgroundColor: 'rgba(243,248,252,1)',
     primaryColor: 'rgba(0,133,251,1)',
@@ -26,6 +23,12 @@ const dark = {
 type Props = {
     _isLightTheme?: boolean,
     _paymentInfo: string,
+    _presetBoostAmountsList: Array<number>,
+    _presetSatsPerMinuteAmountsList: Array<number>,
+    _selectedBoostAmountIndex: number,
+    _selectedSatsPerMinuteAmountIndex: number,
+    _customBoostValue: number,
+    _customSatsPerMinAmountValue: number,
     dispatch: Dispatch<any>,
 };
 
@@ -33,11 +36,17 @@ function PaymentAdjuster(props: Props) {
     const {
         _isLightTheme,
         _paymentInfo,
+        _presetBoostAmountsList,
+        _selectedBoostAmountIndex,
+        _selectedSatsPerMinuteAmountIndex,
+        _presetSatsPerMinuteAmountsList,
+        _customBoostValue,
+        _customSatsPerMinAmountValue,
         dispatch = useDispatch()
     } = props;
 
-    const [boostAmount, setBoostAmount] = React.useState(0);
-    const [satsPerMinuteAmount, setSatsPerMinuteAmount] = React.useState(0);
+    const [boostAmount, setBoostAmount] = React.useState(_selectedBoostAmountIndex);
+    const [satsPerMinuteAmount, setSatsPerMinuteAmount] = React.useState(_selectedSatsPerMinuteAmountIndex);
 
     function formatAmount(num) {
         return Math.abs(num) > 999999
@@ -50,7 +59,7 @@ function PaymentAdjuster(props: Props) {
     return (
         <View style={[styles(_isLightTheme).container, props.style]}>
             <View style={styles(_isLightTheme).buttonRow}>
-                <TouchableOpacity onPress={() => dispatch(onBoost(presetBoostAmountsList[boostAmount]))} style={styles(_isLightTheme).button}>
+                <TouchableOpacity onPress={() => dispatch(onBoost(_presetBoostAmountsList[boostAmount],_paymentInfo))} style={styles(_isLightTheme).button}>
                     <View style={styles(_isLightTheme).imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
@@ -75,17 +84,17 @@ function PaymentAdjuster(props: Props) {
                 <TouchableOpacity onLongPress={() => dispatch(setCustomBoostAmount())}>
                     <View style={styles(_isLightTheme).boostAmountColumn}>
                         <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
-                            {formatAmount(presetBoostAmountsList[boostAmount])}
+                            {formatAmount(_presetBoostAmountsList[boostAmount])}
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).sats}>sats</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        if (boostAmount < presetBoostAmountsList.length - 1) {
+                        if (boostAmount < _presetBoostAmountsList.length - 1) {
                             setBoostAmount(boostAmount + 1);
                         } else {
-                            setBoostAmount(presetBoostAmountsList.length - 1);
+                            setBoostAmount(_presetBoostAmountsList.length - 1);
                         }
                     }}
                 >
@@ -96,10 +105,10 @@ function PaymentAdjuster(props: Props) {
                     onPress={() => {
                         if (satsPerMinuteAmount >= 1) {
                             setSatsPerMinuteAmount(satsPerMinuteAmount - 1);
-                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[satsPerMinuteAmount - 1]));
+                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[satsPerMinuteAmount - 1]));
                         } else {
                             setSatsPerMinuteAmount(0);
-                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[0]));
+                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[0]));
                         }
                     }}
                 >
@@ -113,19 +122,19 @@ function PaymentAdjuster(props: Props) {
                             numberOfLines={1}
                             mode={ResizeTextMode.max_lines}
                         >
-                            {formatAmount(presetSatsPerMinuteAmountsList[satsPerMinuteAmount])}
+                            {formatAmount(_presetSatsPerMinuteAmountsList[satsPerMinuteAmount])}
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).satsPerMinute}>sats/min</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        if (satsPerMinuteAmount < presetSatsPerMinuteAmountsList.length - 1) {
+                        if (satsPerMinuteAmount < _presetSatsPerMinuteAmountsList.length - 1) {
                             setSatsPerMinuteAmount(satsPerMinuteAmount + 1);
-                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[satsPerMinuteAmount + 1]));
+                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[satsPerMinuteAmount + 1]));
                         } else {
-                            setSatsPerMinuteAmount(presetSatsPerMinuteAmountsList.length - 1);
-                            dispatch(changeSatsPerMinute(presetSatsPerMinuteAmountsList[presetSatsPerMinuteAmountsList.length - 1]));
+                            setSatsPerMinuteAmount(_presetSatsPerMinuteAmountsList.length - 1);
+                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[_presetSatsPerMinuteAmountsList.length - 1]));
                         }
                     }}
                 >
@@ -274,14 +283,23 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
 
 
 function _mapStateToProps(state, ownProps) {
-    const { isLightTheme } = state['features/base/settings'];
+    const { isLightTheme, customBoostValue, customSatsPerMinAmountValue, selectedBoostAmountIndex, selectedSatsPerMinuteAmountIndex } = state['features/base/settings'];
     const participants = state['features/base/participants'];
     const presenter = participants
         .find(participant => participant?.email.startsWith('breez:'));
     let paymentInfo = presenter?.email.substring(6);
+    // TODO: Get preset payment options list info from settings
+    const presetBoostAmountsList = [1000, 5000, 10000, 25000, 50000, 100000];
+    const presetSatsPerMinuteAmountsList = [0, 50, 100, 250, 500, 1000, 2500, 5000];
     return {
         _isLightTheme: Boolean(isLightTheme),
         _paymentInfo: paymentInfo,
+        _presetBoostAmountsList: presetBoostAmountsList,
+        _presetSatsPerMinuteAmountsList: presetSatsPerMinuteAmountsList,
+        _selectedBoostAmountIndex: selectedBoostAmountIndex,
+        _selectedSatsPerMinuteAmountIndex: selectedSatsPerMinuteAmountIndex,
+        _customBoostValue: customBoostValue,
+        _customSatsPerMinAmountValue: customSatsPerMinAmountValue,
     };
 }
 

@@ -112,9 +112,12 @@ export class App extends AbstractApp {
             }
 
             dispatch(updateSettings(this.props.userInfo || {}));
-            console.error(this.props.isLightTheme);
             dispatch(updateSettings({
-             isLightTheme: this.props.isLightTheme
+             isLightTheme: this.props.isLightTheme,
+             customBoostValue: 1250,
+             customSatsPerMinAmountValue: 125,
+             selectedBoostAmountIndex: 0,
+             selectedSatsPerMinuteAmountIndex: 0,
              }));
 
             // Update settings with feature-flag.
