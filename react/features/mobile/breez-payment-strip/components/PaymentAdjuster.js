@@ -288,8 +288,8 @@ function _mapStateToProps(state, ownProps) {
     const { isLightTheme, paymentOptions } = state['features/base/settings'];
     const participants = state['features/base/participants'];
     const presenter = participants
-        .find(participant => participant?.email.startsWith('breez:'));
-    let paymentInfo = presenter?.email.substring(6);
+        .find(participant => participant?.email?.startsWith('breez:'));
+    let paymentInfo = presenter?.email?.substring(6);
     let _paymentOptions = JSON.parse(paymentOptions);
     return {
         _isLightTheme: Boolean(isLightTheme),
