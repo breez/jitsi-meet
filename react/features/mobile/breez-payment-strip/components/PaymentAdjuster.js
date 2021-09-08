@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { connect } from '../../../base/redux';
 
 const light = {
-    backgroundColor: 'rgba(243,248,252,1)',
+    backgroundColor: 'rgba(243,248,252,.25)',
     primaryColor: 'rgba(0,133,251,1)',
     fontColor: 'rgba(0,0,0,1)',
     dividerColor: 'rgba(33,33,33,0.1)'
 };
 const dark = {
-    backgroundColor: 'rgba(21,42,61,1)',
+    backgroundColor: 'rgba(21,42,61,0.25)',
     primaryColor: 'rgba(255,255,255,0.7)',
     fontColor: 'rgba(255,255,255,1)',
     dividerColor: 'rgba(255,255,255,0.2)'
