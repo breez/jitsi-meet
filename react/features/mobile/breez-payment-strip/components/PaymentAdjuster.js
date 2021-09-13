@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Button } from 'react-native';
+import DialogInput from 'react-native-dialog-input';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { onBoost, changeSatsPerMinute, setCustomBoostAmount, setCustomSatsPerMinAmount } from '../actions.js';
 import { AutoSizeText, ResizeTextMode } from 'react-native-auto-size-text';
@@ -46,9 +47,64 @@ function PaymentAdjuster(props: Props) {
         _customSatsPerMinAmountValue,
         dispatch = useDispatch()
     } = props;
+    const [boostList, setBoostList] = React.useState(_presetBoostAmountsList);
+    const [satsPerMinuteList, setSatsPerMinuteList] = React.useState(_presetSatsPerMinuteAmountsList);
 
     const [boostAmount, setBoostAmount] = React.useState(_selectedBoostAmountIndex);
     const [satsPerMinuteAmount, setSatsPerMinuteAmount] = React.useState(_selectedSatsPerMinuteAmountIndex);
+
+    const [boostAmountDialogVisible, setBoostAmountDialogVisible] = React.useState(false);
+
+    const showBoostAmountDialog = () => {
+      setBoostAmountDialogVisible(true);
+    };
+
+    const closeBoostAmountDialog = () => {
+      setBoostAmountDialogVisible(false);
+    };
+
+   function submitCustomBoostAmount(newBoostAmount) {
+      setBoostAmountDialogVisible(false);
+      let customBoostAmount = Number(newBoostAmount);
+      let newBoostList = _presetBoostAmountsList.filter(item => item !== _customBoostValue);
+      newBoostList = insert(customBoostAmount, newBoostList);
+      setBoostList(newBoostList);
+      dispatch(setCustomBoostAmount(customBoostAmount));
+   }
+
+    const [satsPerMinAmountDialogVisible, setSatsPerMinAmountDialogVisible] = React.useState(false);
+
+    const showSatsPerMinAmountDialog = () => {
+      setSatsPerMinAmountDialogVisible(true);
+    };
+
+    const closeSatsPerMinAmountDialog = () => {
+      setSatsPerMinAmountDialogVisible(false);
+    };
+
+   function submitCustomSatsPerMinAmount(newSatsPerMinAmount) {
+      setSatsPerMinAmountDialogVisible(false);
+      let customSatsPerMinAmount = Number(newSatsPerMinAmount);
+      let newSatsPerMinAmountList = _presetSatsPerMinuteAmountsList.filter(item => item !== _customSatsPerMinAmountValue);
+      newSatsPerMinAmountList = insert(customSatsPerMinAmount, newSatsPerMinAmountList);
+      setSatsPerMinuteList(newSatsPerMinAmountList);
+      dispatch(setCustomSatsPerMinAmount(customSatsPerMinAmount));
+   }
+
+    const [boostagramDialogVisible, setBoostagramDialogVisible] = React.useState(false);
+
+    const showBoostagramDialog = () => {
+      setBoostagramDialogVisible(true);
+    };
+
+    const closeBoostagramDialog = () => {
+      setBoostagramDialogVisible(false);
+    };
+
+   function submitBoostagram(boostagramMessage) {
+      setBoostagramDialogVisible(false);
+      dispatch(onBoost(boostList[boostAmount],_paymentInfo,boostagramMessage));
+   }
 
     function formatAmount(num) {
         return Math.abs(num) > 999999
@@ -61,7 +117,7 @@ function PaymentAdjuster(props: Props) {
     return (
         <View style={[styles(_isLightTheme).container, props.style]}>
             <View style={styles(_isLightTheme).buttonRow}>
-                <TouchableOpacity onPress={() => dispatch(onBoost(_presetBoostAmountsList[boostAmount],_paymentInfo))} style={styles(_isLightTheme).button}>
+                <TouchableOpacity onLongPress={showBoostagramDialog} onPress={() => dispatch(onBoost(boostList[boostAmount],_paymentInfo))} style={styles(_isLightTheme).button}>
                     <View style={styles(_isLightTheme).imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
@@ -70,6 +126,11 @@ function PaymentAdjuster(props: Props) {
                             style={styles(_isLightTheme).image}
                         ></Image>
                         <Text style={styles(_isLightTheme).boost2}>BOOST!</Text>
+                        <DialogInput isDialogVisible={boostagramDialogVisible}
+                                    title={"Enter Boostagram:"}
+                                    submitInput={ (boostagramMessage) => {submitBoostagram(boostagramMessage)} }
+                                    closeDialog={closeBoostagramDialog}>
+                        </DialogInput>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -83,20 +144,25 @@ function PaymentAdjuster(props: Props) {
                 >
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon}></FeatherIcon>
                 </TouchableOpacity>
-                <TouchableOpacity onLongPress={() => dispatch(setCustomBoostAmount(666))}>
+                <TouchableOpacity onLongPress={showBoostAmountDialog}>
                     <View style={styles(_isLightTheme).boostAmountColumn}>
                         <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
-                            {formatAmount(_presetBoostAmountsList[boostAmount])}
+                            {formatAmount(boostList[boostAmount])}
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).sats}>sats</Text>
+                        <DialogInput isDialogVisible={boostAmountDialogVisible}
+                                    title={"Enter Custom Amount:"}
+                                    submitInput={ (customBoostAmount) => {submitCustomBoostAmount(customBoostAmount)} }
+                                    closeDialog={closeBoostAmountDialog}>
+                        </DialogInput>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        if (boostAmount < _presetBoostAmountsList.length - 1) {
+                        if (boostAmount < boostList.length - 1) {
                             setBoostAmount(boostAmount + 1);
                         } else {
-                            setBoostAmount(_presetBoostAmountsList.length - 1);
+                            setBoostAmount(boostList.length - 1);
                         }
                     }}
                 >
@@ -107,36 +173,36 @@ function PaymentAdjuster(props: Props) {
                     onPress={() => {
                         if (satsPerMinuteAmount >= 1) {
                             setSatsPerMinuteAmount(satsPerMinuteAmount - 1);
-                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[satsPerMinuteAmount - 1]));
+                            dispatch(changeSatsPerMinute(satsPerMinuteList[satsPerMinuteAmount - 1]));
                         } else {
                             setSatsPerMinuteAmount(0);
-                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[0]));
+                            dispatch(changeSatsPerMinute(satsPerMinuteList[0]));
                         }
                     }}
                 >
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon1}></FeatherIcon>
                 </TouchableOpacity>
-                <TouchableOpacity onLongPress={() => dispatch(setCustomSatsPerMinAmount(222))}>
+                <TouchableOpacity onLongPress={showSatsPerMinAmountDialog}>
                     <View style={styles(_isLightTheme).satsPerMinAmountColumn}>
-                        <AutoSizeText
-                            style={styles(_isLightTheme).satsPerMinAmount}
-                            fontSize={16}
-                            numberOfLines={1}
-                            mode={ResizeTextMode.max_lines}
-                        >
-                            {formatAmount(_presetSatsPerMinuteAmountsList[satsPerMinuteAmount])}
+                        <AutoSizeText style={styles(_isLightTheme).satsPerMinAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
+                            {formatAmount(satsPerMinuteList[satsPerMinuteAmount])}
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).satsPerMinute}>sats/min</Text>
+                        <DialogInput isDialogVisible={satsPerMinAmountDialogVisible}
+                                    title={"Enter Custom Amount:"}
+                                    submitInput={ (customSatsPerMinAmount) => {submitCustomSatsPerMinAmount(customSatsPerMinAmount)} }
+                                    closeDialog={closeSatsPerMinAmountDialog}>
+                        </DialogInput>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        if (satsPerMinuteAmount < _presetSatsPerMinuteAmountsList.length - 1) {
+                        if (satsPerMinuteAmount < satsPerMinuteList.length - 1) {
                             setSatsPerMinuteAmount(satsPerMinuteAmount + 1);
-                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[satsPerMinuteAmount + 1]));
+                            dispatch(changeSatsPerMinute(satsPerMinuteList[satsPerMinuteAmount + 1]));
                         } else {
-                            setSatsPerMinuteAmount(_presetSatsPerMinuteAmountsList.length - 1);
-                            dispatch(changeSatsPerMinute(_presetSatsPerMinuteAmountsList[_presetSatsPerMinuteAmountsList.length - 1]));
+                            setSatsPerMinuteAmount(satsPerMinuteList.length - 1);
+                            dispatch(changeSatsPerMinute(satsPerMinuteList[satsPerMinuteList.length - 1]));
                         }
                     }}
                 >

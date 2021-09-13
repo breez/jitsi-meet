@@ -3,7 +3,9 @@
  *
  * {
  *     type: BOOST_PAYMENT,
- *     boostAmount: number
+ *     boostAmount: number,
+ *     paymentInfo: string,
+ *     boostagram: string
  * }
  *
  * @protected
