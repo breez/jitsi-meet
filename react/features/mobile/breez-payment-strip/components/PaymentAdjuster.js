@@ -127,7 +127,7 @@ function PaymentAdjuster(props: Props) {
                         ></Image>
                         <Text style={styles(_isLightTheme).boost2}>BOOST!</Text>
                         <DialogInput isDialogVisible={boostagramDialogVisible}
-                                    title={"Enter Boostagram:"}
+                                    title={"Send a Boostagram"}
                                     submitInput={ (boostagramMessage) => {submitBoostagram(boostagramMessage)} }
                                     closeDialog={closeBoostagramDialog}>
                         </DialogInput>
