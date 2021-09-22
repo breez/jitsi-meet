@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, Text, Button } from 'react-native';
 import DialogInput from 'react-native-dialog-input';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import ConfettiCannon from 'react-native-confetti-cannon';
 import { onBoost, changeSatsPerMinute, setCustomBoostAmount, setCustomSatsPerMinAmount } from '../actions.js';
 import { AutoSizeText, ResizeTextMode } from 'react-native-auto-size-text';
 
@@ -47,6 +48,7 @@ function PaymentAdjuster(props: Props) {
         _customSatsPerMinAmountValue,
         dispatch = useDispatch()
     } = props;
+    let confetti;
     const [boostList, setBoostList] = React.useState(_presetBoostAmountsList);
     const [satsPerMinuteList, setSatsPerMinuteList] = React.useState(_presetSatsPerMinuteAmountsList);
 
@@ -56,55 +58,61 @@ function PaymentAdjuster(props: Props) {
     const [boostAmountDialogVisible, setBoostAmountDialogVisible] = React.useState(false);
 
     const showBoostAmountDialog = () => {
-      setBoostAmountDialogVisible(true);
+        setBoostAmountDialogVisible(true);
     };
 
     const closeBoostAmountDialog = () => {
-      setBoostAmountDialogVisible(false);
+        setBoostAmountDialogVisible(false);
     };
 
-   function submitCustomBoostAmount(newBoostAmount) {
-      setBoostAmountDialogVisible(false);
-      let customBoostAmount = Number(newBoostAmount);
-      let newBoostList = _presetBoostAmountsList.filter(item => item !== _customBoostValue);
-      newBoostList = insert(customBoostAmount, newBoostList);
-      setBoostList(newBoostList);
-      dispatch(setCustomBoostAmount(customBoostAmount));
-   }
+    function submitCustomBoostAmount(newBoostAmount) {
+         setBoostAmountDialogVisible(false);
+         if(newBoostAmount != null) {
 
-    const [satsPerMinAmountDialogVisible, setSatsPerMinAmountDialogVisible] = React.useState(false);
+             let customBoostAmount = Number(newBoostAmount);
+             let newBoostList = _presetBoostAmountsList.filter(item => item !== _customBoostValue);
+             newBoostList = insert(customBoostAmount, newBoostList);
+             setBoostList(newBoostList);
+             dispatch(setCustomBoostAmount(customBoostAmount));
+         }
+    }
 
-    const showSatsPerMinAmountDialog = () => {
-      setSatsPerMinAmountDialogVisible(true);
-    };
+     const [satsPerMinAmountDialogVisible, setSatsPerMinAmountDialogVisible] = React.useState(false);
 
-    const closeSatsPerMinAmountDialog = () => {
-      setSatsPerMinAmountDialogVisible(false);
-    };
+     const showSatsPerMinAmountDialog = () => {
+        setSatsPerMinAmountDialogVisible(true);
+     };
 
-   function submitCustomSatsPerMinAmount(newSatsPerMinAmount) {
-      setSatsPerMinAmountDialogVisible(false);
-      let customSatsPerMinAmount = Number(newSatsPerMinAmount);
-      let newSatsPerMinAmountList = _presetSatsPerMinuteAmountsList.filter(item => item !== _customSatsPerMinAmountValue);
-      newSatsPerMinAmountList = insert(customSatsPerMinAmount, newSatsPerMinAmountList);
-      setSatsPerMinuteList(newSatsPerMinAmountList);
-      dispatch(setCustomSatsPerMinAmount(customSatsPerMinAmount));
-   }
+     const closeSatsPerMinAmountDialog = () => {
+        setSatsPerMinAmountDialogVisible(false);
+     };
+
+    function submitCustomSatsPerMinAmount(newSatsPerMinAmount) {
+         setSatsPerMinAmountDialogVisible(false);
+         if(newSatsPerMinAmount != null) {
+             let customSatsPerMinAmount = Number(newSatsPerMinAmount);
+             let newSatsPerMinAmountList = _presetSatsPerMinuteAmountsList.filter(item => item !== _customSatsPerMinAmountValue);
+             newSatsPerMinAmountList = insert(customSatsPerMinAmount, newSatsPerMinAmountList);
+             setSatsPerMinuteList(newSatsPerMinAmountList);
+             dispatch(setCustomSatsPerMinAmount(customSatsPerMinAmount));
+         }
+    }
 
     const [boostagramDialogVisible, setBoostagramDialogVisible] = React.useState(false);
 
     const showBoostagramDialog = () => {
-      setBoostagramDialogVisible(true);
+        setBoostagramDialogVisible(true);
     };
 
     const closeBoostagramDialog = () => {
-      setBoostagramDialogVisible(false);
+        setBoostagramDialogVisible(false);
     };
 
-   function submitBoostagram(boostagramMessage) {
-      setBoostagramDialogVisible(false);
-      dispatch(onBoost(boostList[boostAmount],_paymentInfo,boostagramMessage));
-   }
+    function submitBoostagram(boostagramMessage) {
+        setBoostagramDialogVisible(false);
+        confetti && confetti.start();
+        dispatch(onBoost(boostList[boostAmount],_paymentInfo,boostagramMessage));
+    }
 
     function formatAmount(num) {
         return Math.abs(num) > 999999
@@ -114,10 +122,15 @@ function PaymentAdjuster(props: Props) {
             : Math.sign(num) * Math.abs(num);
     }
 
+     const boost = () => {
+       confetti && confetti.start();
+       dispatch(onBoost(boostList[boostAmount],_paymentInfo));
+    }
+
     return (
         <View style={[styles(_isLightTheme).container, props.style]}>
             <View style={styles(_isLightTheme).buttonRow}>
-                <TouchableOpacity onLongPress={showBoostagramDialog} onPress={() => dispatch(onBoost(boostList[boostAmount],_paymentInfo))} style={styles(_isLightTheme).button}>
+                <TouchableOpacity onLongPress={showBoostagramDialog} onPress={boost} style={styles(_isLightTheme).button}>
                     <View style={styles(_isLightTheme).imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
@@ -126,10 +139,18 @@ function PaymentAdjuster(props: Props) {
                             style={styles(_isLightTheme).image}
                         ></Image>
                         <Text style={styles(_isLightTheme).boost2}>BOOST!</Text>
+                        <ConfettiCannon count={100} fadeOut={true}keyboardType explosionSpeed={1000} fallSpeed={3000} origin={{x: -80, y: 0}} autoStart={false} ref={ref => (confetti = ref)} />
                         <DialogInput isDialogVisible={boostagramDialogVisible}
-                                    title={"Send a Boostagram"}
-                                    submitInput={ (boostagramMessage) => {submitBoostagram(boostagramMessage)} }
-                                    closeDialog={closeBoostagramDialog}>
+                                     dialogStyle={styles(_isLightTheme).boostagramDialog}
+                                     title={"Send a Boostagram"}
+                                     textInputProps={{maxLength:90,}}
+                                     titleStyle={styles(_isLightTheme).titleStyle}
+                                     inputStyle={styles(_isLightTheme).inputStyle}
+                                     cancelStyle={styles(_isLightTheme).cancelStyle}
+                                     submitText={"BOOST!"}
+                                     submitStyle={styles(_isLightTheme).submitStyle}
+                                     submitInput={ (boostagramMessage) => {submitBoostagram(boostagramMessage)} }
+                                     closeDialog={closeBoostagramDialog}>
                         </DialogInput>
                     </View>
                 </TouchableOpacity>
@@ -151,9 +172,16 @@ function PaymentAdjuster(props: Props) {
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).sats}>sats</Text>
                         <DialogInput isDialogVisible={boostAmountDialogVisible}
-                                    title={"Enter Custom Amount:"}
-                                    submitInput={ (customBoostAmount) => {submitCustomBoostAmount(customBoostAmount)} }
-                                    closeDialog={closeBoostAmountDialog}>
+                                     dialogStyle={styles(_isLightTheme).boostagramDialog}
+                                     title={"Enter a Custom Amount:"}
+                                     textInputProps={{maxLength:10,keyboardType:"number-pad"}}
+                                     titleStyle={styles(_isLightTheme).titleStyle}
+                                     inputStyle={styles(_isLightTheme).inputStyle}
+                                     cancelStyle={styles(_isLightTheme).cancelStyle}
+                                     submitText={"APPROVE"}
+                                     submitStyle={styles(_isLightTheme).submitStyle}
+                                     submitInput={ (customBoostAmount) => {submitCustomBoostAmount(customBoostAmount)} }
+                                     closeDialog={closeBoostAmountDialog}>
                         </DialogInput>
                     </View>
                 </TouchableOpacity>
@@ -189,9 +217,16 @@ function PaymentAdjuster(props: Props) {
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).satsPerMinute}>sats/min</Text>
                         <DialogInput isDialogVisible={satsPerMinAmountDialogVisible}
-                                    title={"Enter Custom Amount:"}
-                                    submitInput={ (customSatsPerMinAmount) => {submitCustomSatsPerMinAmount(customSatsPerMinAmount)} }
-                                    closeDialog={closeSatsPerMinAmountDialog}>
+                                     dialogStyle={styles(_isLightTheme).boostagramDialog}
+                                     title={"Enter a Custom Amount:"}
+                                     textInputProps={{maxLength:7,keyboardType:"number-pad"}}
+                                     titleStyle={styles(_isLightTheme).titleStyle}
+                                     inputStyle={styles(_isLightTheme).inputStyle}
+                                     cancelStyle={styles(_isLightTheme).cancelStyle}
+                                     submitText={"APPROVE"}
+                                     submitStyle={styles(_isLightTheme).submitStyle}
+                                     submitInput={ (customSatsPerMinAmount) => {submitCustomSatsPerMinAmount(customSatsPerMinAmount)} }
+                                     closeDialog={closeSatsPerMinAmountDialog}>
                         </DialogInput>
                     </View>
                 </TouchableOpacity>
@@ -343,6 +378,46 @@ const styles = (_isLightTheme) => StyleSheet.create({
         marginLeft: 16,
         marginTop: 13,
     },
+    titleStyle:{
+        fontFamily: 'IBMPlexSans-SemiBold',
+        fontWeight: 'bold',
+        fontSize: 16,
+        letterSpacing: 0.25,
+        color: _isLightTheme ? "#334560" : "#ffffff",
+        textAlign:'left',
+    },
+    inputStyle:{
+        fontFamily: 'IBMPlexSans',
+        textAlign:'left',
+        fontSize: 16,
+        color: _isLightTheme ? "#334560" : "rgba(255,255,255,0.6)",
+        borderBottomColor: _isLightTheme ? "rgba(51,69,96,0.25)" : "rgba(255,255,255,0.25)",
+        borderBottomWidth: 1,
+        marginTop: 8,
+        padding: 8,
+    },
+    submitStyle: {
+        fontFamily: 'IBMPlexSans-SemiBold',
+        fontWeight: "bold",
+        fontSize: 14.3,
+        letterSpacing: 0.25,
+        textAlign:'right',
+        padding: 8,
+        color: _isLightTheme ? "rgba(5, 93, 235, 1)" : "#7aa5eb",
+    },
+    cancelStyle: {
+        fontFamily: 'IBMPlexSans-SemiBold',
+        fontWeight: "bold",
+        fontSize: 14.3,
+        letterSpacing: 0.25,
+        textAlign:'right',
+        padding: 8,
+        color: _isLightTheme ? "rgba(5, 93, 235, 1)" : "#7aa5eb",
+    },
+    boostagramDialog: {
+        backgroundColor: _isLightTheme ? "#ffffff" : '#152a3d',
+        borderRadius: 12,
+    }
 });
 
 function _mapDispatchToProps(dispatch: Function, ownProps): Object {

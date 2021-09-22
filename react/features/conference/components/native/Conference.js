@@ -230,6 +230,18 @@ class Conference extends AbstractConference<Props, *> {
     }
 
     /**
+     * Renders the payment adjuster
+     *
+     * @private
+     * @returns {React$Node}
+     */
+    _renderPaymentAdjuster(paymentAdjusterVisible: Boolean) {
+        return (paymentAdjusterVisible
+                ? <PaymentAdjuster />
+                : undefined);
+    }
+
+    /**
      * Renders the content for the Conference container.
      *
      * @private
@@ -284,9 +296,9 @@ class Conference extends AbstractConference<Props, *> {
                     </Container> }
 
                     <LonelyMeetingExperience />
-
+                    { this._renderPaymentAdjuster(true) }
                     { _shouldDisplayTileView || <><Filmstrip /><Toolbox /></> }
-                    { _shouldDisplayTileView || <><Filmstrip /><PaymentAdjuster /></> }
+
                 </View>
 
                 <SafeAreaView
