@@ -11,15 +11,13 @@ import { BOOST_PAYMENT, SET_SATS_PER_MINUTE, SET_CUSTOM_BOOST_AMOUNT, SET_CUSTOM
  *     type: BOOST_PAYMENT,
  *     boostAmount: number,
  *     paymentInfo: string,
- *     boostagram: string
  * }}
  */
-export function onBoost(boostAmount: number, paymentInfo: string, boostagram: string = "") {
+export function onBoost(boostAmount: number, paymentInfo: string) {
     return {
         type: BOOST_PAYMENT,
         boostAmount,
         paymentInfo,
-        boostagram
     };
 }
 

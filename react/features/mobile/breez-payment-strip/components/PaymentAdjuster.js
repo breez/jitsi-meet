@@ -98,22 +98,6 @@ function PaymentAdjuster(props: Props) {
          }
     }
 
-    const [boostagramDialogVisible, setBoostagramDialogVisible] = React.useState(false);
-
-    const showBoostagramDialog = () => {
-        setBoostagramDialogVisible(true);
-    };
-
-    const closeBoostagramDialog = () => {
-        setBoostagramDialogVisible(false);
-    };
-
-    function submitBoostagram(boostagramMessage) {
-        setBoostagramDialogVisible(false);
-        confetti && confetti.start();
-        dispatch(onBoost(boostList[boostAmount],_paymentInfo,boostagramMessage));
-    }
-
     function formatAmount(num) {
         return Math.abs(num) > 999999
             ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(1) + 'M'
@@ -130,7 +114,7 @@ function PaymentAdjuster(props: Props) {
     return (
         <View style={[styles(_isLightTheme).container, props.style]}>
             <View style={styles(_isLightTheme).buttonRow}>
-                <TouchableOpacity onLongPress={showBoostagramDialog} onPress={boost} style={styles(_isLightTheme).button}>
+                <TouchableOpacity onPress={boost} style={styles(_isLightTheme).button}>
                     <View style={styles(_isLightTheme).imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
@@ -140,18 +124,6 @@ function PaymentAdjuster(props: Props) {
                         ></Image>
                         <Text style={styles(_isLightTheme).boost2}>BOOST!</Text>
                         <ConfettiCannon count={100} fadeOut={true}keyboardType explosionSpeed={1000} fallSpeed={3000} origin={{x: -80, y: 0}} autoStart={false} ref={ref => (confetti = ref)} />
-                        <DialogInput isDialogVisible={boostagramDialogVisible}
-                                     dialogStyle={styles(_isLightTheme).boostagramDialog}
-                                     title={"Send a Boostagram"}
-                                     textInputProps={{maxLength:90,}}
-                                     titleStyle={styles(_isLightTheme).titleStyle}
-                                     inputStyle={styles(_isLightTheme).inputStyle}
-                                     cancelStyle={styles(_isLightTheme).cancelStyle}
-                                     submitText={"BOOST!"}
-                                     submitStyle={styles(_isLightTheme).submitStyle}
-                                     submitInput={ (boostagramMessage) => {submitBoostagram(boostagramMessage)} }
-                                     closeDialog={closeBoostagramDialog}>
-                        </DialogInput>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -172,7 +144,7 @@ function PaymentAdjuster(props: Props) {
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).sats}>sats</Text>
                         <DialogInput isDialogVisible={boostAmountDialogVisible}
-                                     dialogStyle={styles(_isLightTheme).boostagramDialog}
+                                     dialogStyle={styles(_isLightTheme).customAmountDialog}
                                      title={"Enter a Custom Amount:"}
                                      textInputProps={{maxLength:10,keyboardType:"number-pad"}}
                                      titleStyle={styles(_isLightTheme).titleStyle}
@@ -217,7 +189,7 @@ function PaymentAdjuster(props: Props) {
                         </AutoSizeText>
                         <Text style={styles(_isLightTheme).satsPerMinute}>sats/min</Text>
                         <DialogInput isDialogVisible={satsPerMinAmountDialogVisible}
-                                     dialogStyle={styles(_isLightTheme).boostagramDialog}
+                                     dialogStyle={styles(_isLightTheme).customAmountDialog}
                                      title={"Enter a Custom Amount:"}
                                      textInputProps={{maxLength:7,keyboardType:"number-pad"}}
                                      titleStyle={styles(_isLightTheme).titleStyle}
@@ -414,7 +386,7 @@ const styles = (_isLightTheme) => StyleSheet.create({
         padding: 8,
         color: _isLightTheme ? "rgba(5, 93, 235, 1)" : "#7aa5eb",
     },
-    boostagramDialog: {
+    customAmountDialog: {
         backgroundColor: _isLightTheme ? "#ffffff" : '#152a3d',
         borderRadius: 12,
     }

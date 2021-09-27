@@ -230,7 +230,6 @@ MiddlewareRegistry.register(store => next => action => {
             /* data */ {
                 boostAmount: action.boostAmount,
                 paymentInfo: action.paymentInfo,
-                boostagram: action.boostagram
             });
         break;
 
