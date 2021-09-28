@@ -12,14 +12,15 @@ import { connect } from '../../../base/redux';
 const light = {
     backgroundColor: 'rgba(243,248,252,.25)',
     primaryColor: 'rgba(0,133,251,1)',
-    fontColor: 'rgba(0,0,0,1)',
-    dividerColor: 'rgba(33,33,33,0.1)'
+    fontColor: 'rgba(255,255,255,1)',
+    dividerColor: 'rgba(33,33,33,0.1)',
+    dialogColor: '#ffffff',
+    buttonColor: 'rgba(5, 93, 235, 1)',
 };
 const dark = {
-    backgroundColor: 'rgba(21,42,61,0.25)',
     primaryColor: 'rgba(255,255,255,0.7)',
-    fontColor: 'rgba(255,255,255,1)',
-    dividerColor: 'rgba(255,255,255,0.2)'
+    dialogColor: '#152a3d',
+    buttonColor: '#7aa5eb',
 };
 
 type Props = {
@@ -118,14 +119,15 @@ function PaymentAdjuster(props: Props) {
                     <View style={styles(_isLightTheme).imageRow}>
                         <Image
                             source={require('../assets/icon_boost.png')}
-                            tintColor={_isLightTheme ? light.primaryColor : dark.primaryColor}
+                            tintColor={dark.primaryColor}
                             resizeMode="contain"
-                            style={styles(_isLightTheme).image}
-                        ></Image>
+                            style={styles(_isLightTheme).image}></Image>
                         <Text style={styles(_isLightTheme).boost2}>BOOST!</Text>
                         <ConfettiCannon count={100} fadeOut={true}keyboardType explosionSpeed={1000} fallSpeed={3000} origin={{x: -80, y: 0}} autoStart={false} ref={ref => (confetti = ref)} />
                     </View>
                 </TouchableOpacity>
+            </View>
+            <View style={styles(_isLightTheme).boostRow}>
                 <TouchableOpacity
                     onPress={() => {
                         if (boostAmount >= 1) {
@@ -133,8 +135,7 @@ function PaymentAdjuster(props: Props) {
                         } else {
                             setBoostAmount(0);
                         }
-                    }}
-                >
+                    }}>
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon}></FeatherIcon>
                 </TouchableOpacity>
                 <TouchableOpacity onLongPress={showBoostAmountDialog}>
@@ -164,11 +165,12 @@ function PaymentAdjuster(props: Props) {
                         } else {
                             setBoostAmount(boostList.length - 1);
                         }
-                    }}
-                >
+                    }}>
                     <FeatherIcon name="plus-circle" style={styles(_isLightTheme).plusIcon}></FeatherIcon>
                 </TouchableOpacity>
-                <View style={styles(_isLightTheme).divider} />
+            </View>
+            <View style={styles(_isLightTheme).divider} />
+            <View style={styles(_isLightTheme).satsPerMinRow}>
                 <TouchableOpacity
                     onPress={() => {
                         if (satsPerMinuteAmount >= 1) {
@@ -178,8 +180,7 @@ function PaymentAdjuster(props: Props) {
                             setSatsPerMinuteAmount(0);
                             dispatch(changeSatsPerMinute(satsPerMinuteList[0]));
                         }
-                    }}
-                >
+                    }}>
                     <FeatherIcon name="minus-circle" style={styles(_isLightTheme).minusIcon1}></FeatherIcon>
                 </TouchableOpacity>
                 <TouchableOpacity onLongPress={showSatsPerMinAmountDialog}>
@@ -211,8 +212,7 @@ function PaymentAdjuster(props: Props) {
                             setSatsPerMinuteAmount(satsPerMinuteList.length - 1);
                             dispatch(changeSatsPerMinute(satsPerMinuteList[satsPerMinuteList.length - 1]));
                         }
-                    }}
-                >
+                    }}>
                     <FeatherIcon name="plus-circle" style={styles(_isLightTheme).plusIcon1}></FeatherIcon>
                 </TouchableOpacity>
             </View>
@@ -224,34 +224,51 @@ function PaymentAdjuster(props: Props) {
 const styles = (_isLightTheme) => StyleSheet.create({
     container: {
         flexDirection: 'row',
+        width: 360,
         borderWidth: 0,
-        borderColor: _isLightTheme ? light.dividerColor : dark.dividerColor,
+        borderColor: light.dividerColor,
         borderStyle: 'solid',
         borderTopWidth: 2,
-        backgroundColor: _isLightTheme ? light.backgroundColor : dark.backgroundColor,
-        height: 64,
+        borderBottomWidth: 2,
+        backgroundColor: light.backgroundColor,
+        height: 56,
+        justifyContent: 'space-between'
+    },
+    buttonRow: {
+        flex: 11,
+        flexDirection: 'row',
+        alignItems: "center",
+        alignSelf: "center",
+        marginLeft: 16,
+    },
+    boostRow: {
+        flex: 11,
+        flexDirection: 'row',
+        alignItems: "center",
+        alignSelf: "center",
+        marginLeft: 16,
+        marginRight: 16,
+    },
+    divider: {
+        height: 52,
+        width: 2,
+        backgroundColor: light.dividerColor,
+    },
+    satsPerMinRow: {
+        flex: 14,
+        flexDirection: 'row',
+        alignItems: "center",
+        alignSelf: "center",
+        marginLeft: 12,
+        marginRight: 16,
     },
     button: {
         width: 94,
         height: 36,
-        backgroundColor: _isLightTheme ? light.backgroundColor : dark.backgroundColor,
+        backgroundColor: light.backgroundColor,
         borderWidth: 1,
-        borderColor: _isLightTheme ? light.primaryColor : dark.primaryColor,
+        borderColor: dark.primaryColor,
         borderRadius: 6,
-        flexDirection: 'row',
-    },
-    image: {
-        width: 20,
-        height: 20,
-    },
-    boost2: {
-        fontFamily: 'IBMPlexSans-SemiBold',
-        color: _isLightTheme ? light.primaryColor : dark.primaryColor,
-        height: 20,
-        width: 50,
-        lineHeight: 20,
-        marginLeft: 9,
-        marginTop: -2,
     },
     imageRow: {
         height: 20,
@@ -261,99 +278,83 @@ const styles = (_isLightTheme) => StyleSheet.create({
         marginLeft: 8,
         marginTop: 8,
     },
-    minusIcon: {
-        color: _isLightTheme ? light.primaryColor : dark.primaryColor,
-        fontSize: 24,
-        marginLeft: 12,
-        marginTop: 6,
+    image: {
+        width: 20,
+        height: 20,
+    },
+    boost2: {
+        fontFamily: 'IBMPlexSans-SemiBold',
+        color: dark.primaryColor,
+        height: 20,
+        width: 50,
+        lineHeight: 20,
+        marginLeft: 9,
+        marginTop: -2,
+    },
+    boostAmountColumn: {
+        width: 34,
+        alignItems: "center",
+        alignSelf: "center",
+        marginLeft: 6,
+        marginRight: 6,
+    },
+    satsPerMinAmountColumn: {
+        width: 48,
+        alignItems: "center",
+        alignSelf: "center",
+        marginLeft: 6,
+        marginRight: 6,
     },
     boostAmount: {
         fontFamily: 'IBMPlexSans-SemiBold',
-        color: _isLightTheme ? light.fontColor : dark.fontColor,
+        color: light.fontColor,
         letterSpacing: 1,
         lineHeight: 20,
-        marginTop: -2,
+        textAlign: 'center',
+    },
+    satsPerMinAmount: {
+        fontFamily: 'IBMPlexSans-SemiBold',
+        color: light.fontColor,
+        letterSpacing: 1,
+        lineHeight: 20,
         textAlign: 'center',
     },
     sats: {
         fontFamily: 'IBMPlexSans',
-        color: _isLightTheme ? light.fontColor : dark.fontColor,
+        color: light.fontColor,
         fontSize: 10,
         letterSpacing: 1,
         height: 12,
         width: 34,
-        marginTop: 1,
         textAlign: 'center',
-    },
-    boostAmountColumn: {
-        width: 34,
-        marginLeft: 5,
-        marginTop: 1,
-        marginBottom: 2,
-    },
-    plusIcon: {
-        color: _isLightTheme ? light.primaryColor : dark.primaryColor,
-        fontSize: 24,
-        marginLeft: 6,
-        marginTop: 6,
-    },
-    divider: {
-        height: 64,
-        width: 2,
-        marginTop: -13,
-        marginLeft: 12,
-        backgroundColor: _isLightTheme ? light.dividerColor : dark.dividerColor,
-    },
-    minusIcon1: {
-        color: _isLightTheme ? light.primaryColor : dark.primaryColor,
-        fontSize: 24,
-        marginLeft: 12,
-        marginTop: 6,
-    },
-    satsPerMinAmount: {
-        fontFamily: 'IBMPlexSans-SemiBold',
-        color: _isLightTheme ? light.fontColor : dark.fontColor,
-        fontSize: 16,
-        letterSpacing: 1,
-        lineHeight: 20,
-        height: 20,
-        width: 48,
-        marginTop: -2,
-        textAlign: 'center',
-        alignSelf: 'stretch',
     },
     satsPerMinute: {
         fontFamily: 'IBMPlexSans',
-        color: _isLightTheme ? light.fontColor : dark.fontColor,
+        color: light.fontColor,
         fontSize: 10,
+        textAlign: 'center',
         letterSpacing: 1,
-        marginTop: 2,
         width: 48,
     },
-    satsPerMinAmountColumn: {
-        width: 47,
-        marginLeft: 5,
-        marginTop: 1,
-        marginBottom: 2,
+    minusIcon: {
+        color: dark.primaryColor,
+        fontSize: 24,
+    },
+    plusIcon: {
+        color: dark.primaryColor,
+        fontSize: 24,
+    },
+    minusIcon1: {
+        color: dark.primaryColor,
+        fontSize: 24,
     },
     plusIcon1: {
-        color: _isLightTheme ? light.primaryColor : dark.primaryColor,
+        color: dark.primaryColor,
         fontSize: 24,
-        marginLeft: 7,
-        marginTop: 6,
-    },
-    buttonRow: {
-        height: 37,
-        flexDirection: 'row',
-        flex: 1,
-        marginRight: 15,
-        marginLeft: 16,
-        marginTop: 13,
     },
     titleStyle:{
-        fontFamily: 'IBMPlexSans-SemiBold',
-        fontWeight: 'bold',
-        fontSize: 16,
+        fontFamily: 'IBMPlexSans',
+        fontSize: 18,
         letterSpacing: 0.25,
         color: _isLightTheme ? "#334560" : "#ffffff",
         textAlign:'left',
@@ -369,25 +370,23 @@ const styles = (_isLightTheme) => StyleSheet.create({
         padding: 8,
     },
     submitStyle: {
-        fontFamily: 'IBMPlexSans-SemiBold',
-        fontWeight: "bold",
+        fontFamily: 'IBMPlexSans',
         fontSize: 14.3,
         letterSpacing: 0.25,
         textAlign:'right',
         padding: 8,
-        color: _isLightTheme ? "rgba(5, 93, 235, 1)" : "#7aa5eb",
+        color: _isLightTheme ? light.buttonColor : dark.buttonColor,
     },
     cancelStyle: {
-        fontFamily: 'IBMPlexSans-SemiBold',
-        fontWeight: "bold",
+        fontFamily: 'IBMPlexSans',
         fontSize: 14.3,
         letterSpacing: 0.25,
         textAlign:'right',
         padding: 8,
-        color: _isLightTheme ? "rgba(5, 93, 235, 1)" : "#7aa5eb",
+        color: _isLightTheme ? light.buttonColor : dark.buttonColor,
     },
     customAmountDialog: {
-        backgroundColor: _isLightTheme ? "#ffffff" : '#152a3d',
+        backgroundColor: _isLightTheme ? light.dialogColor : dark.dialogColor,
         borderRadius: 12,
     }
 });
