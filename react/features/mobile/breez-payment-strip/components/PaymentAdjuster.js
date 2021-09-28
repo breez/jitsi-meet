@@ -143,7 +143,7 @@ function PaymentAdjuster(props: Props) {
                         <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
                             {formatAmount(boostList[boostAmount])}
                         </AutoSizeText>
-                        <Text style={styles(_isLightTheme).sats}>sats</Text>
+                        <AutoSizeText style={styles(_isLightTheme).sats} fontSize={10} numberOfLines={1} mode={ResizeTextMode.max_lines}>sats</AutoSizeText>
                         <DialogInput isDialogVisible={boostAmountDialogVisible}
                                      dialogStyle={styles(_isLightTheme).customAmountDialog}
                                      title={"Enter a Custom Amount:"}
@@ -188,7 +188,7 @@ function PaymentAdjuster(props: Props) {
                         <AutoSizeText style={styles(_isLightTheme).satsPerMinAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
                             {formatAmount(satsPerMinuteList[satsPerMinuteAmount])}
                         </AutoSizeText>
-                        <Text style={styles(_isLightTheme).satsPerMinute}>sats/min</Text>
+                        <AutoSizeText style={styles(_isLightTheme).satsPerMinute} fontSize={10} numberOfLines={1} mode={ResizeTextMode.max_lines}>sats/min</AutoSizeText>
                         <DialogInput isDialogVisible={satsPerMinAmountDialogVisible}
                                      dialogStyle={styles(_isLightTheme).customAmountDialog}
                                      title={"Enter a Custom Amount:"}
@@ -224,7 +224,6 @@ function PaymentAdjuster(props: Props) {
 const styles = (_isLightTheme) => StyleSheet.create({
     container: {
         flexDirection: 'row',
-        width: 360,
         borderWidth: 0,
         borderColor: light.dividerColor,
         borderStyle: 'solid',
@@ -322,19 +321,14 @@ const styles = (_isLightTheme) => StyleSheet.create({
     sats: {
         fontFamily: 'IBMPlexSans',
         color: light.fontColor,
-        fontSize: 10,
         letterSpacing: 1,
-        height: 12,
-        width: 34,
         textAlign: 'center',
     },
     satsPerMinute: {
         fontFamily: 'IBMPlexSans',
         color: light.fontColor,
-        fontSize: 10,
         textAlign: 'center',
         letterSpacing: 1,
-        width: 48,
     },
     minusIcon: {
         color: dark.primaryColor,
