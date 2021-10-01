@@ -10,10 +10,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { connect } from '../../../base/redux';
 
 const light = {
-    backgroundColor: 'rgba(243,248,252,.25)',
+    backgroundColor: 'rgba(243,248,252,.3)',
     primaryColor: 'rgba(0,133,251,1)',
     fontColor: 'rgba(255,255,255,1)',
-    dividerColor: 'rgba(33,33,33,0.1)',
+    dividerColor: 'rgba(33,33,33,0.2)',
     dialogColor: '#ffffff',
     buttonColor: 'rgba(5, 93, 235, 1)',
 };
@@ -140,7 +140,7 @@ function PaymentAdjuster(props: Props) {
                 </TouchableOpacity>
                 <TouchableOpacity onLongPress={showBoostAmountDialog}>
                     <View style={styles(_isLightTheme).boostAmountColumn}>
-                        <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
+                        <AutoSizeText style={styles(_isLightTheme).boostAmount} fontSize={12} numberOfLines={1} mode={ResizeTextMode.max_lines}>
                             {formatAmount(boostList[boostAmount])}
                         </AutoSizeText>
                         <AutoSizeText style={styles(_isLightTheme).sats} fontSize={10} numberOfLines={1} mode={ResizeTextMode.max_lines}>sats</AutoSizeText>
@@ -185,7 +185,7 @@ function PaymentAdjuster(props: Props) {
                 </TouchableOpacity>
                 <TouchableOpacity onLongPress={showSatsPerMinAmountDialog}>
                     <View style={styles(_isLightTheme).satsPerMinAmountColumn}>
-                        <AutoSizeText style={styles(_isLightTheme).satsPerMinAmount} fontSize={16} numberOfLines={1} mode={ResizeTextMode.max_lines}>
+                        <AutoSizeText style={styles(_isLightTheme).satsPerMinAmount} fontSize={12} numberOfLines={1} mode={ResizeTextMode.max_lines}>
                             {formatAmount(satsPerMinuteList[satsPerMinuteAmount])}
                         </AutoSizeText>
                         <AutoSizeText style={styles(_isLightTheme).satsPerMinute} fontSize={10} numberOfLines={1} mode={ResizeTextMode.max_lines}>sats/min</AutoSizeText>
@@ -239,6 +239,7 @@ const styles = (_isLightTheme) => StyleSheet.create({
         alignItems: "center",
         alignSelf: "center",
         marginLeft: 16,
+        marginRight: 12,
     },
     boostRow: {
         flex: 11,
@@ -263,14 +264,14 @@ const styles = (_isLightTheme) => StyleSheet.create({
     },
     button: {
         width: 94,
-        height: 36,
+        height: 32,
         backgroundColor: light.backgroundColor,
         borderWidth: 1,
         borderColor: dark.primaryColor,
         borderRadius: 6,
     },
     imageRow: {
-        height: 20,
+        height: 16,
         flexDirection: 'row',
         flex: 1,
         marginRight: 7,
@@ -278,15 +279,15 @@ const styles = (_isLightTheme) => StyleSheet.create({
         marginTop: 8,
     },
     image: {
-        width: 20,
-        height: 20,
+        width: 16,
+        height: 16,
     },
     boost2: {
         fontFamily: 'IBMPlexSans-SemiBold',
         color: dark.primaryColor,
-        height: 20,
+        height: 16,
         width: 50,
-        lineHeight: 20,
+        lineHeight: 18,
         marginLeft: 9,
         marginTop: -2,
     },
@@ -332,19 +333,19 @@ const styles = (_isLightTheme) => StyleSheet.create({
     },
     minusIcon: {
         color: dark.primaryColor,
-        fontSize: 24,
+        fontSize: 20,
     },
     plusIcon: {
         color: dark.primaryColor,
-        fontSize: 24,
+        fontSize: 20,
     },
     minusIcon1: {
         color: dark.primaryColor,
-        fontSize: 24,
+        fontSize: 20,
     },
     plusIcon1: {
         color: dark.primaryColor,
-        fontSize: 24,
+        fontSize: 20,
     },
     titleStyle:{
         fontFamily: 'IBMPlexSans',
