@@ -296,8 +296,9 @@ class Conference extends AbstractConference<Props, *> {
                     </Container> }
 
                     <LonelyMeetingExperience />
+                    { _shouldDisplayTileView || <Filmstrip /> }
                     { this._renderPaymentAdjuster(true) }
-                    { _shouldDisplayTileView || <><Filmstrip /><Toolbox /></> }
+                    { _shouldDisplayTileView || <Toolbox /> }
 
                 </View>
 
