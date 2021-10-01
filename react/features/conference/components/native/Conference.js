@@ -236,7 +236,9 @@ class Conference extends AbstractConference<Props, *> {
      * @returns {React$Node}
      */
     _renderPaymentAdjuster(paymentAdjusterVisible: Boolean) {
-        return (paymentAdjusterVisible
+        const { _connecting } = this.props;
+
+        return (!_connecting && paymentAdjusterVisible
                 ? <PaymentAdjuster />
                 : undefined);
     }
@@ -315,7 +317,7 @@ class Conference extends AbstractConference<Props, *> {
                 { this._renderConferenceNotification() }
 
                 { this._renderConferenceModals() }
-                {_shouldDisplayTileView && <Toolbox />}
+                {_shouldDisplayTileView && <>{ this._renderPaymentAdjuster(true) }<Toolbox /></>}
             </>
         );
     }
