@@ -94,6 +94,11 @@ type Props = AbstractProps & {
     _toolboxVisible: boolean,
 
     /**
+     * The indicator which determines whether the PaymentAdjuster is visible.
+     */
+    _paymentAdjusterVisible: boolean,
+
+    /**
      * The redux {@code dispatch} function.
      */
     dispatch: Function
@@ -235,10 +240,10 @@ class Conference extends AbstractConference<Props, *> {
      * @private
      * @returns {React$Node}
      */
-    _renderPaymentAdjuster(paymentAdjusterVisible: Boolean) {
-        const { _connecting, _toolboxVisible } = this.props;
+    _renderPaymentAdjuster() {
+        const { _connecting, _toolboxVisible, _paymentAdjusterVisible } = this.props;
 
-        return (!_connecting && _toolboxVisible && paymentAdjusterVisible
+        return (!_connecting && _toolboxVisible && _paymentAdjusterVisible
                 ? <PaymentAdjuster />
                 : undefined);
     }
@@ -298,7 +303,7 @@ class Conference extends AbstractConference<Props, *> {
                     </Container> }
 
                     <LonelyMeetingExperience />
-                    {_shouldDisplayTileView || <><Filmstrip />{ this._renderPaymentAdjuster(true) }<Toolbox /></>}
+                    {_shouldDisplayTileView || <><Filmstrip />{ this._renderPaymentAdjuster() }<Toolbox /></>}
 
                 </View>
 
@@ -315,7 +320,7 @@ class Conference extends AbstractConference<Props, *> {
                 { this._renderConferenceNotification() }
 
                 { this._renderConferenceModals() }
-                {_shouldDisplayTileView && <>{ this._renderPaymentAdjuster(true) }<Toolbox /></>}
+                {_shouldDisplayTileView && <>{ this._renderPaymentAdjuster() }<Toolbox /></>}
             </>
         );
     }
@@ -419,6 +424,7 @@ function _mapStateToProps(state) {
     //   are leaving one.
     const connecting_
         = connecting || (connection && (!membersOnly && (joining || (!conference && !leaving))));
+    const { paymentOptions } = state['features/base/settings'];
 
     return {
         ...abstractMapStateToProps(state),
@@ -430,7 +436,8 @@ function _mapStateToProps(state) {
         _largeVideoParticipantId: state['features/large-video'].participantId,
         _pictureInPictureEnabled: getFeatureFlag(state, PIP_ENABLED),
         _reducedUI: reducedUI,
-        _toolboxVisible: isToolboxVisible(state)
+        _toolboxVisible: isToolboxVisible(state),
+        _paymentAdjusterVisible: paymentOptions != null
     };
 }
 
