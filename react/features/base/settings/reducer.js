@@ -38,6 +38,7 @@ const DEFAULT_STATE = {
     userSelectedSkipPrejoin: undefined,
     isLightTheme: true,
     paymentOptions: undefined,
+    paymentInfo: undefined,
 };
 
 const STORE_NAME = 'features/base/settings';
@@ -93,7 +94,7 @@ function _initSettings(featureState) {
     // jibri, and remove the old settings.js values.
     const savedDisplayName = jitsiLocalStorage.getItem('displayname');
     const savedEmail = jitsiLocalStorage.getItem('email');
-
+    const savedPaymentInfo = jitsiLocalStorage.getItem('paymentInfo');
     const isLightTheme = jitsiLocalStorage.getItem('isLightTheme');
 
     // The helper _.escape will convert null to an empty strings. The empty
@@ -103,10 +104,12 @@ function _initSettings(featureState) {
     // local storage.
     const displayName = savedDisplayName === null ? undefined : _.escape(savedDisplayName);
     const email = savedEmail === null ? undefined : _.escape(savedEmail);
+    const paymentInfo = savedPaymentInfo === null ? undefined : _.escape(savedPaymentInfo);
 
     settings = assignIfDefined({
         displayName,
         email,
+        paymentInfo,
         isLightTheme,
     }, settings);
 

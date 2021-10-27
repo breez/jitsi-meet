@@ -392,7 +392,7 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
 
 
 function _mapStateToProps(state, ownProps) {
-    const { isLightTheme, paymentOptions } = state['features/base/settings'];
+    const { isLightTheme, paymentInfo, paymentOptions } = state["features/base/settings"];
     const participants = state['features/base/participants'];
     const presenter = participants
         .find(participant => participant?.email?.startsWith('breez:'));

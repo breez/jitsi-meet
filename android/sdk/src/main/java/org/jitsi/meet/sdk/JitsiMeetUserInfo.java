@@ -41,6 +41,11 @@ public class JitsiMeetUserInfo {
      */
     private URL avatar;
 
+    /**
+     * User's payment info.
+     */
+    private String paymentInfo;
+
     public JitsiMeetUserInfo() {}
 
     public JitsiMeetUserInfo(Bundle b) {
@@ -60,6 +65,10 @@ public class JitsiMeetUserInfo {
                 avatar = new URL(avatarURL);
             } catch (MalformedURLException e) {
             }
+        }
+
+        if (b.containsKey("paymentInfo")) {
+            paymentInfo = b.getString("paymentInfo");
         }
     }
 
@@ -87,6 +96,10 @@ public class JitsiMeetUserInfo {
         this.avatar = avatar;
     }
 
+    public String getPaymentInfo() { return paymentInfo; }
+
+    public void setPaymentInfo(String paymentInfo) { this.paymentInfo = paymentInfo; }
+
     Bundle asBundle() {
         Bundle b = new Bundle();
 
@@ -100,6 +113,10 @@ public class JitsiMeetUserInfo {
 
         if (avatar != null) {
             b.putString("avatarURL", avatar.toString());
+        }
+
+        if (paymentInfo != null) {
+            b.putString("paymentInfo", paymentInfo);
         }
 
         return b;
