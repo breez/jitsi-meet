@@ -387,6 +387,16 @@ function _registerForNativeEvents(store) {
         dispatch(sendMessage(message));
     });
 
+    eventEmitter.addListener(ExternalAPI.SET_LOCAL_PARTICIPANT_PROPERTY, ({ name, value }) => {
+        const conference = getCurrentConference(getState());
+        logger.info('ExternalAPI.SET_LOCAL_PARTICIPANT_PROPERTY');
+        try {
+            conference && conference.setLocalParticipantProperty(name, value);
+        } catch (error) {
+            logger.warn('Cannot set local participant property', error);
+        }
+    });
+
 }
 
 /**
@@ -405,6 +415,7 @@ function _unregisterForNativeEvents() {
     eventEmitter.removeAllListeners(ExternalAPI.OPEN_CHAT);
     eventEmitter.removeAllListeners(ExternalAPI.CLOSE_CHAT);
     eventEmitter.removeAllListeners(ExternalAPI.SEND_CHAT_MESSAGE);
+    eventEmitter.removeAllListeners(ExternalAPI.SET_LOCAL_PARTICIPANT_PROPERTY);
 }
 
 /**

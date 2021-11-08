@@ -3102,4 +3102,11 @@ export default {
 
         this._proxyConnection = null;
     }
+
+    /**
+    * Sets a property for the local participant.
+    */
+    setLocalParticipantProperty(name, value) {
+        room.setLocalParticipantProperty(name, value);
+    }
 };

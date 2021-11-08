@@ -80,7 +80,8 @@ public class BroadcastAction {
         BOOST_PAYMENT("org.jitsi.meet.BOOST_PAYMENT"),
         SET_SATS_PER_MINUTE("org.jitsi.meet.SET_SATS_PER_MINUTE"),
         SET_CUSTOM_BOOST_AMOUNT("org.jitsi.meet.SET_CUSTOM_BOOST_AMOUNT"),
-        SET_CUSTOM_SATS_PER_MINUTE("org.jitsi.meet.SET_CUSTOM_SATS_PER_MINUTE");
+        SET_CUSTOM_SATS_PER_MINUTE("org.jitsi.meet.SET_CUSTOM_SATS_PER_MINUTE"),
+        SET_LOCAL_PARTICIPANT_PROPERTY("org.jitsi.meet.SET_LOCAL_PARTICIPANT_PROPERTY");
 
         private final String action;
 

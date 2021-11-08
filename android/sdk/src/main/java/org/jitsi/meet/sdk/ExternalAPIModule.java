@@ -90,6 +90,7 @@ class ExternalAPIModule
         constants.put("SET_SATS_PER_MINUTE", BroadcastAction.Type.SET_SATS_PER_MINUTE.getAction());
         constants.put("SET_CUSTOM_BOOST_AMOUNT", BroadcastAction.Type.SET_CUSTOM_BOOST_AMOUNT.getAction());
         constants.put("SET_CUSTOM_SATS_PER_MINUTE", BroadcastAction.Type.SET_CUSTOM_SATS_PER_MINUTE.getAction());
+        constants.put("SET_LOCAL_PARTICIPANT_PROPERTY", BroadcastAction.Type.SET_LOCAL_PARTICIPANT_PROPERTY.getAction());
 
         return constants;
     }

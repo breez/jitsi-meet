@@ -48,4 +48,11 @@ public class BroadcastIntentHelper {
         intent.putExtra("muted", muted);
         return intent;
     }
+
+    public static Intent buildSetLocalParticipantPropertyIntent(String name, String value) {
+        Intent intent = new Intent(BroadcastAction.Type.SET_LOCAL_PARTICIPANT_PROPERTY.getAction());
+        intent.putExtra("name", name);
+        intent.putExtra("value", value);
+        return intent;
+    }
 }
