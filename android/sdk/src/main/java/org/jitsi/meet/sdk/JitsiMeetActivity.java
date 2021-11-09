@@ -251,7 +251,7 @@ public class JitsiMeetActivity extends FragmentActivity
 
     protected  void onParticipantsInfoRetrieved(HashMap<String, Object> extraData) {
         try {
-            JitsiMeetLogger.i("Participants info retrieved:"), extraData);
+            JitsiMeetLogger.i("Participants info retrieved:", extraData);
         } catch (Exception e) {
             JitsiMeetLogger.w("Invalid retrieve participants info request", e);
         }
