@@ -74,4 +74,13 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "satsPerMinute" key with the sats per minute amount.
      */
     void setCustomSatsPerMinAmount(Map<String, Object> data);
+
+    /**
+     * Called when participants info is retrieved
+     *
+     * @param data Map with a "participantsInfo" key with a list of participants
+     * information and a "requestId" key with the id that was sent in the
+     * RETRIEVE_PARTICIPANTS_INFO action.
+     */
+    void onParticipantsInfoRetrieved(Map<String, Object> data);
 }

@@ -249,6 +249,14 @@ public class JitsiMeetActivity extends FragmentActivity
         }
     }
 
+    protected  void onParticipantsInfoRetrieved(HashMap<String, Object> extraData) {
+        try {
+            JitsiMeetLogger.i("Participants info retrieved:"), extraData);
+        } catch (Exception e) {
+            JitsiMeetLogger.w("Invalid retrieve participants info request", e);
+        }
+    }
+
     // Activity lifecycle methods
     //
 
@@ -341,6 +349,9 @@ public class JitsiMeetActivity extends FragmentActivity
                     break;
                 case SET_CUSTOM_SATS_PER_MINUTE:
                     setCustomSatsPerMinAmount(event.getData());
+                    break;
+                case PARTICIPANTS_INFO_RETRIEVED:
+                    onParticipantsInfoRetrieved(event.getData());
                     break;
             }
         }
