@@ -115,7 +115,6 @@ export class App extends AbstractApp {
             dispatch(updateSettings({
              isLightTheme: this.props.isLightTheme,
              paymentOptions: this.props.paymentOptions,
-             paymentInfo: this.props.userInfo.paymentInfo,
              }));
 
             // Update settings with feature-flag.
