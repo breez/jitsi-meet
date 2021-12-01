@@ -99,11 +99,6 @@ type Props = AbstractProps & {
     _paymentAdjusterVisible: boolean,
 
     /**
-     * The payment info of the conference
-     */
-    _paymentInfo: string,
-
-    /**
      * The redux {@code dispatch} function.
      */
     dispatch: Function
@@ -246,9 +241,9 @@ class Conference extends AbstractConference<Props, *> {
      * @returns {React$Node}
      */
     _renderPaymentAdjuster() {
-        const { _connecting, _toolboxVisible, _paymentAdjusterVisible, _paymentInfo } = this.props;
+        const { _connecting, _toolboxVisible, _paymentAdjusterVisible } = this.props;
 
-        return (!_connecting && _toolboxVisible && _paymentAdjusterVisible && _paymentInfo != null
+        return (!_connecting && _toolboxVisible && _paymentAdjusterVisible != null
                 ? <PaymentAdjuster />
                 : undefined);
     }
@@ -430,10 +425,6 @@ function _mapStateToProps(state) {
     const connecting_
         = connecting || (connection && (!membersOnly && (joining || (!conference && !leaving))));
     const { paymentOptions } = state['features/base/settings'];
-    const participants = state['features/base/participants'];
-    const presenter = participants
-        .find(participant => participant?.email?.startsWith('breez:'));
-    let paymentInfo = presenter?.email?.substring(6);
 
     return {
         ...abstractMapStateToProps(state),
@@ -447,7 +438,6 @@ function _mapStateToProps(state) {
         _reducedUI: reducedUI,
         _toolboxVisible: isToolboxVisible(state),
         _paymentAdjusterVisible: paymentOptions != null,
-        _paymentInfo: paymentInfo
     };
 }
 

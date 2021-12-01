@@ -25,7 +25,6 @@ const dark = {
 
 type Props = {
     _isLightTheme?: boolean,
-    _paymentInfo: string,
     _presetBoostAmountsList: Array<number>,
     _presetSatsPerMinuteAmountsList: Array<number>,
     _selectedBoostAmountIndex: number,
@@ -40,7 +39,6 @@ type Props = {
 function PaymentAdjuster(props: Props) {
     const {
         _isLightTheme,
-        _paymentInfo,
         _presetBoostAmountsList,
         _presetSatsPerMinuteAmountsList,
         _selectedBoostAmountIndex,
@@ -109,7 +107,7 @@ function PaymentAdjuster(props: Props) {
 
      const boost = () => {
        confetti && confetti.start();
-       dispatch(onBoost(boostList[boostAmount],_paymentInfo));
+       dispatch(onBoost(boostList[boostAmount]));
     }
 
     return (
@@ -394,13 +392,9 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
 function _mapStateToProps(state, ownProps) {
     const { isLightTheme, paymentOptions } = state["features/base/settings"];
     const participants = state['features/base/participants'];
-    const presenter = participants
-        .find(participant => participant?.email?.startsWith('breez:'));
-    let paymentInfo = presenter?.email?.substring(6);
     let _paymentOptions = JSON.parse(paymentOptions);
     return {
         _isLightTheme: Boolean(isLightTheme),
-        _paymentInfo: paymentInfo,
         _presetBoostAmountsList: insert(_paymentOptions.customBoostValue, _paymentOptions.presetBoostAmountsList),
         _presetSatsPerMinuteAmountsList: insert(_paymentOptions.customSatsPerMinAmountValue, _paymentOptions.presetSatsPerMinuteAmountsList),
         _selectedBoostAmountIndex: _paymentOptions.selectedBoostAmountIndex,

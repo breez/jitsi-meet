@@ -4,7 +4,6 @@
  * {
  *     type: BOOST_PAYMENT,
  *     boostAmount: number,
- *     paymentInfo: string,
  * }
  *
  * @protected

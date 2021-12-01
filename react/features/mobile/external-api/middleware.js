@@ -229,7 +229,6 @@ MiddlewareRegistry.register(store => next => action => {
             type,
             /* data */ {
                 boostAmount: action.boostAmount,
-                paymentInfo: action.paymentInfo,
             });
         break;
 
