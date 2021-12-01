@@ -243,7 +243,7 @@ class Conference extends AbstractConference<Props, *> {
     _renderPaymentAdjuster() {
         const { _connecting, _toolboxVisible, _paymentAdjusterVisible } = this.props;
 
-        return (!_connecting && _toolboxVisible && _paymentAdjusterVisible != null
+        return (!_connecting && _toolboxVisible && _paymentAdjusterVisible
                 ? <PaymentAdjuster />
                 : undefined);
     }
